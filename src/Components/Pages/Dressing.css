@@ -1,0 +1,103 @@
+/* Stop page scrolling and fix the container height */
+html, body {
+    margin: 0;
+    padding: 0;
+    height: 100%;
+    overflow: hidden; /* Prevent scrolling */
+  }
+  
+  .dressing-room-container {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 50px;
+    background: linear-gradient(90deg, #b2f0ec 40%, #f5dad8 60%);
+    height: 100vh; /* Ensure container fills the full viewport height */
+    overflow: hidden; /* Prevent any overflow */
+  }
+  
+  .left-section {
+    width: 40%;
+    padding: 20px;
+    text-align: left;
+  }
+  
+  .title1 {
+    font-size: 64px; /* Increased font size */
+    color: #ff5b5b;
+    font-weight: bold;
+    text-shadow: 3px 3px 5px rgba(0, 0, 0, 0.2);
+  }
+  
+  .subtitle {
+    font-size: 24px;
+    color: #333;
+    margin-top: -10px;
+  }
+  
+  .description {
+    font-size: 18px;
+    color: #666;
+    margin-top: 20px;
+  }
+  
+  .right-section {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 60%;
+    height: 100%;
+    position: relative;
+    background-color: #f5dad8;
+  }
+  
+  .model-label {
+    position: absolute;
+  margin-top: 255px;
+    right: 45rem;
+    background: linear-gradient(90deg, rgba(245, 218, 216, 0.7), rgba(255, 143, 160, 0.7)); /* Gradient with transparency */
+  border: 2px solid rgba(255, 143, 160, 0.8); /* Transparent border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 20px; /* Padding inside the label */
+    display: inline-block; /* Ensure it doesn't take up full width */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    cursor: pointer;
+  }
+  
+  .model-label p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+    margin: 0; /* Remove default margins */
+    text-align: center; /* Center the text */
+    
+  }
+  
+  
+  .model-image {
+    width: 123%; /* Make the image bigger */
+    height: 100%; /* Scale the image to fit the entire section */
+    object-fit: cover; /* Ensure the image fills the section without stretching */
+  }
+  .model-label2 {
+    
+    padding: 10px;
+    background: linear-gradient(90deg, rgba(245, 218, 216, 0.7), rgba(255, 143, 160, 0.7)); /* Gradient with transparency */
+  border: 2px solid rgba(255, 143, 160, 0.8); /* Transparent border */
+    border-radius: 20px; /* Rounded corners */
+    padding: 5px 20px; /* Padding inside the label */
+    display: inline-block; /* Ensure it doesn't take up full width */
+    box-shadow: 0px 2px 8px rgba(0, 0, 0, 0.1); /* Light shadow for depth */
+    cursor: pointer;
+    margin-bottom: 5.1rem;
+   
+  }
+
+  .model-label2 p {
+    font-size: 20px;
+    font-weight: bold;
+    color: #333; /* Dark text color */
+    margin: 0; /* Remove default margins */
+    text-align: center; /* Center the text */
+  }
+  

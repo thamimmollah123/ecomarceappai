@@ -1,0 +1,133 @@
+
+
+.home {
+  display: flex;
+
+  align-items: center;
+  height: 80vh;
+  background-color:white;
+  margin-left: 54rem;
+
+}
+
+.product-card {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  background-color: #f8f8f8;/* Same background color for the card */
+  padding: 20px;
+  border-radius: 10px;
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  width: 90%;
+  max-width: 250px;
+}
+
+.product-image-container {
+  flex: 1;
+  text-align: center;
+}
+
+.product-image {
+  width: 100%;
+ 
+}
+
+.product-details {
+  flex: 1;
+  text-align: center;
+}
+
+.jersey-selection {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-right: 20px;
+  
+ 
+}
+
+.jersey-btn {
+  margin: 10px 0;
+  border: 2px solid transparent;
+  padding: 5px;
+  cursor: pointer;
+  transition: border-color 0.3s;
+  background-color: white; /* Same background color as the card */
+  border-radius: 5px;
+}
+
+.jersey-btn.selected {
+  border-color: red;
+}
+
+
+.toggle-image {
+  width: 71px;
+  height: auto;
+  object-fit: cover;
+}
+
+.text-container{
+  margin-left: -72rem;
+ 
+  .paragraph{
+    font-size: 45px;
+  }
+  .paragraph-virtual{
+    font-size: 17px;
+  }
+}
+/* Mobile and Tablet Styles */
+@media (max-width: 768px) { /* Tablet and smaller devices */
+  .home {
+    margin-left: 0; /* Adjust margin for smaller screens */
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .product-card {
+    flex-direction: column;
+    width: 100%;
+    max-width: none;
+  }
+
+  .product-image {
+    width: 100%;
+    height: auto;
+  }
+
+  .text-container {
+    margin-left: 0; /* Remove left margin for smaller screens */
+    text-align: center; /* Center-align text for better readability */
+  }
+
+  .text-container .paragraph {
+    font-size: 32px; /* Adjust font size for smaller screens */
+  }
+
+  .text-container .paragraph-virtual {
+    font-size: 14px; /* Adjust font size for smaller screens */
+  }
+}
+
+@media (max-width: 480px) { /* Mobile devices */
+  .product-card {
+    padding: 10px; /* Adjust padding for smaller screens */
+  }
+
+  .jersey-selection {
+    margin-right: 0; /* Remove margin for smaller screens */
+  }
+
+  .toggle-image {
+    width: 50px; /* Adjust image size for mobile screens */
+  }
+
+  .text-container .paragraph {
+    font-size: 24px; /* Further adjust font size for mobile screens */
+  }
+
+  .text-container .paragraph-virtual {
+    font-size: 12px; /* Further adjust font size for mobile screens */
+  }
+}

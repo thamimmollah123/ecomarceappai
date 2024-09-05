@@ -1,0 +1,77 @@
+.home {
+    display: flex;
+  
+    align-items: center;
+    height: 80vh;
+    background-color:white;
+    margin-left: 54rem;
+  
+  }
+  
+  .product-card {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    background-color: #f8f8f8;/* Same background color for the card */
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+
+  
+  }
+  
+  .product-image-container {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .product-image {
+    width: 100%;
+   
+  }
+  
+  .product-details {
+    flex: 1;
+    text-align: center;
+  }
+  
+  .jersey-selection {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 10px;
+  }
+  
+  .jersey-btn {
+    margin: 10px 100px;
+    border: 2px solid transparent;
+    padding: 5px;
+    cursor: pointer;
+    transition: border-color 0.3s;
+    background-color: white; /* Same background color as the card */
+    border-radius: 5px;
+  }
+  
+  .jersey-btn.selected {
+    border-color: red;
+  }
+  
+  .toggle-image {
+    width: 71px;
+    height: auto;
+    object-fit: cover;
+  }
+  
+  .text-container{
+    margin-left: -72rem;
+   
+    .paragraph{
+      font-size: 45px;
+    }
+    .paragraph-virtual{
+      font-size: 17px;
+    }
+  }
+  .red-border {
+    border: 3px solid red;
+  }
