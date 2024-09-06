@@ -1,0 +1,61 @@
+/* Container for the slider, full width and centered */
+.slider-container {
+    position: relative;
+    width: 95vw; /* Full viewport width */
+    max-width: 79%; /* Ensures it doesn't exceed viewport width */
+    margin: 0 auto;
+    margin-top: 4rem;
+    transition: transform 0.5s ease-out; /* Smooth transition for slide-out */
+}
+
+.slider-container.slide-out {
+    transform: translateX(-100%); /* Slide the container out to the left */
+}
+
+/* Navigation buttons styling */
+.navigation {
+    position: absolute;
+    top: 50%;
+    width: 100%;
+    display: flex;
+    justify-content: space-between;
+    transform: translateY(-50%);
+    z-index: 10;
+    padding: 0 20px;
+}
+
+.navigation button {
+    background: rgba(232, 10, 10, 0.5); /* Semi-transparent background */
+    border: 2px solid #fff; /* Border color for the button */
+    color: #fff;
+    border-radius: 50%; /* Rounded button */
+    padding: 7px;
+    cursor: pointer;
+    font-size: 20px;
+    transition: background 0.3s, border-color 0.3s;
+}
+
+.navigation button:hover {
+    background: rgba(232, 10, 10, 0.7);
+    border-color: #ff9900;
+}
+
+/* Display area for images */
+.model-display {
+    display: flex;
+    overflow: hidden;
+}
+
+/* Wrapper to slide images */
+.image-wrapper {
+    display: flex;
+    transition: transform 0.1s ease-in-out; /* Smooth sliding effect */
+    width: 300%;
+}
+
+/* Style for each image */
+.image-wrapper img {
+    width: 25.33%;
+    height: auto;
+    cursor: pointer;
+}

@@ -8,7 +8,7 @@ import Nav from './Nav';
 
 const Home = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
-  const [selectedKurti, setSelectedKurti] = useState(null);
+  const [selectedKurti, setSelectedKurti] = useState(kurti1); // Set default to 'frock1'
   const outputCanvasRef = useRef(null);
 
   useEffect(() => {
@@ -20,8 +20,23 @@ const Home = () => {
       canvas.width = img.width;
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
+
+      // By default, draw 'frock1' (kurti1) after the base image is loaded
+      const clothingImg = new Image();
+      clothingImg.src = kurti1;
+      clothingImg.onload = () => {
+        const width = img.width * 0.47;
+        const height = img.height * 0.5;
+        const xPos = img.width * 0.269;
+        const yPos = img.height * 0.21;
+
+        ctx.drawImage(clothingImg, xPos, yPos, width, height);
+
+        // Update the final image source with 'frock1' by default
+        setFinalImageSrc(canvas.toDataURL());
+      };
     };
-  }, []);
+  }, []); // Empty dependency array ensures this runs only once on component mount
 
   const handleImageClick = (clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
     setSelectedKurti(clothingImageSrc); // Set the selected kurti
@@ -37,15 +52,12 @@ const Home = () => {
       canvas.height = baseImg.height;
       ctx.drawImage(baseImg, 0, 0);
 
-      // Draw the clothing image on top
+      // Draw the selected clothing image on top
       const clothingImg = new Image();
       clothingImg.src = clothingImageSrc;
       clothingImg.onload = () => {
-        // Adjust the width and height based on the provided factors
-        const width = baseImg.width * widthFactor;   // Stretch horizontally
-        const height = baseImg.height * heightFactor; // Keep height proportional or adjust as needed
-
-        // Adjust the x and y position based on the provided factors
+        const width = baseImg.width * widthFactor;
+        const height = baseImg.height * heightFactor;
         const xPos = baseImg.width * xPosFactor;
         const yPos = baseImg.height * yPosFactor;
 

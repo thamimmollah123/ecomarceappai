@@ -33,7 +33,7 @@ const Dressing = () => {
 
   const handleModelClick = (label) => {
     if (label === 'Her') {
-      navigate('/virtual');
+      navigate('/navi');
     } else if (label === 'Him') {
       navigate('/men');
     }
