@@ -5,6 +5,9 @@ import About from './Components/Pages/About';
 import Dressing from './Components/Pages/Dressing';
 import Men from './Components/Pages/Men';
 import NavigationDress from './Components/Pages/NavigationDress';
+import BabyGirl from './Components/Pages/BabyGirl';
+import Healthy from './Components/Pages/Healthy';
+import ShortSkirt from './Components/Pages/ShortSkirt';
 
 const PageRoute = () => {
   return (
@@ -16,10 +19,10 @@ const PageRoute = () => {
             <Route path="/about" element={<About />} />
             <Route path="/navi" element={<NavigationDress/>} />
             <Route path="/men" element={<Men />} />
+            <Route path="/baby" element={<BabyGirl />} />
+            <Route path="/healty" element={<Healthy />} />
+            <Route path="/ShortSkirt" element={<ShortSkirt />} />
         
-         
-      
-          
           </Routes>
         </Router>
       );

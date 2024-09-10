@@ -11,6 +11,13 @@ const Home = () => {
   const [selectedKurti, setSelectedKurti] = useState(kurti1); // Set default to 'frock1'
   const outputCanvasRef = useRef(null);
 
+  // Dynamic content for text with explicit <br/> tags
+  const [textContent, setTextContent] = useState({
+    title: "VIRTUAL DRESSING ROOM",
+    heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
+    description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
+  });
+
   useEffect(() => {
     const canvas = outputCanvasRef.current;
     const ctx = canvas.getContext('2d');
@@ -74,42 +81,45 @@ const Home = () => {
       <Nav />
 
       <div className="home">
-        <div className="jersey-selection">
-          <button
-            onClick={() => handleImageClick(kurti1, 0.47, 0.5, 0.269, 0.21)} 
-            className={`jersey-btn ${selectedKurti === kurti1 ? 'selected' : ''}`}
-          >
-            <img src={kurti1} alt="Frock 1" className="toggle-image" />
-          </button><br />
-          <button
-            onClick={() => handleImageClick(redkurti, 0.69, 0.5, 0.15, 0.199)} 
-            className={`jersey-btn ${selectedKurti === redkurti ? 'selected' : ''}`}
-          >
-            <img src={redkurti} alt="Red" className="toggle-image" />
-          </button><br />
-          <button
-            onClick={() => handleImageClick(blackkurti, 0.57, 0.5, 0.199, 0.14)} 
-            className={`jersey-btn ${selectedKurti === blackkurti ? 'selected' : ''}`}
-          >
-            <img src={blackkurti} alt="Black Dress" className="toggle-image" />
-          </button>
-        </div>
-
-        <div className="product-card">
-          <div className="product-image-container">
-            <img
-              src={finalImageSrc}
-              alt="Human Figure"
-              className="product-image"
-            />
-            <canvas ref={outputCanvasRef} style={{ display: 'none' }}></canvas>
+        <div className='container-home'>
+          <div className="jersey-selection">
+            <button
+              onClick={() => handleImageClick(kurti1, 0.47, 0.5, 0.269, 0.21)} 
+              className={`jersey-btn ${selectedKurti === kurti1 ? 'selected' : ''}`}
+            >
+              <img src={kurti1} alt="Frock 1" className="toggle-image" />
+            </button><br />
+            <button
+              onClick={() => handleImageClick(redkurti, 0.69, 0.5, 0.15, 0.199)} 
+              className={`jersey-btn ${selectedKurti === redkurti ? 'selected' : ''}`}
+            >
+              <img src={redkurti} alt="Red" className="toggle-image" />
+            </button><br />
+            <button
+              onClick={() => handleImageClick(blackkurti, 0.57, 0.5, 0.199, 0.14)} 
+              className={`jersey-btn ${selectedKurti === blackkurti ? 'selected' : ''}`}
+            >
+              <img src={blackkurti} alt="Black Dress" className="toggle-image" />
+            </button>
+          </div>
+    
+          <div className="product-card">
+            <div className="product-image-container">
+              <img
+                src={finalImageSrc}
+                alt="Human Figure"
+                className="product-image"
+              />
+              <canvas ref={outputCanvasRef} style={{ display: 'none' }}></canvas>
+            </div>
           </div>
         </div>
 
+        {/* Text container with dynamic content and line breaks */}
         <div className="text-container">
-          <p className="title">VIRTUAL DRESSING ROOM</p>
-          <h1 className="paragraph">One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models</h1>
-          <p className='paragraph-virtual'>Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them.</p>
+          <p className="title">{textContent.title}</p>
+          <h1 className="paragraph" dangerouslySetInnerHTML={{ __html: textContent.heading }}></h1>
+          <p className="paragraph-virtual" dangerouslySetInnerHTML={{ __html: textContent.description }}></p>
         </div>
       </div>
     </>

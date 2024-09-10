@@ -1,25 +1,41 @@
+.container-home{
+
+    background-color: #f1f0f0;
+    padding: 15px; /* Optional: Adds padding around the container */
+    padding-left: 50px;
+ 
+    border-radius: 7px; /* Optional: Rounds corners of the container */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow to the container */
+    display: flex;
+   
+   
+}
 
 
 .home {
   display: flex;
-
   align-items: center;
   height: 80vh;
-  background-color:white;
-  margin-left: 54rem;
-
+  background-color: white;
+  margin-left: 54rem;  /* This might need adjustment or be handled differently for better responsiveness */
 }
 
 .product-card {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: #f8f8f8;/* Same background color for the card */
+  background-color:rgb(249,249,248);
   padding: 20px;
   border-radius: 10px;
   box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
   width: 90%;
   max-width: 250px;
+  border-radius: 10px;
+  
+  
+
+  
+
 }
 
 .product-image-container {
@@ -28,22 +44,22 @@
 }
 
 .product-image {
-  width: 100%;
- 
-}
-
-.product-details {
-  flex: 1;
-  text-align: center;
+  width: 100%;  /* Ensures the image scales responsively within the container */
 }
 
 .jersey-selection {
   display: flex;
   flex-direction: column;
   align-items: center;
-  margin-right: 20px;
-  
- 
+  margin-right: 50px;
+  max-height: 400px; /* Adjust as needed */
+  overflow-y: scroll; /* Vertical scroll */
+  scrollbar-width: none; /* For Firefox */
+}
+
+.jersey-selection::-webkit-scrollbar {
+  width: 0px; /* Remove scrollbar for WebKit browsers */
+  background: transparent; /* Optional: make background transparent */
 }
 
 .jersey-btn {
@@ -51,15 +67,37 @@
   border: 2px solid transparent;
   padding: 5px;
   cursor: pointer;
-  transition: border-color 0.3s;
-  background-color: white; /* Same background color as the card */
+  transition: border-color 0.3s, box-shadow 0.3s;
+  background-color: white;
   border-radius: 5px;
+  outline: none; /* Remove default focus outline */
 }
 
 .jersey-btn.selected {
   border-color: red;
+  position: relative;
+  background-color: #f8f8f8;
 }
 
+.jersey-btn.selected:focus {
+  outline: none; /* Prevent default focus outline */
+}
+
+.jersey-btn:focus {
+  outline: none; /* Prevent default focus outline */
+}
+
+.jersey-btn.selected::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  right: 40px;
+  width: 15px;
+  height: 15px;
+  background-color: pink;
+  border-radius: 50%;
+  transform: translate(50%, -50%);
+}
 
 .toggle-image {
   width: 71px;
@@ -67,20 +105,24 @@
   object-fit: cover;
 }
 
-.text-container{
+
+
+.text-container {
   margin-left: -72rem;
- 
-  .paragraph{
-    font-size: 45px;
-  }
-  .paragraph-virtual{
-    font-size: 17px;
-  }
 }
-/* Mobile and Tablet Styles */
-@media (max-width: 768px) { /* Tablet and smaller devices */
+
+.text-container .paragraph {
+  font-size: 45px;
+}
+
+.text-container .paragraph-virtual {
+  font-size: 17px;
+}
+
+/* Responsive adjustments */
+@media (max-width: 768px) {
   .home {
-    margin-left: 0; /* Adjust margin for smaller screens */
+    margin-left: 0;
     flex-direction: column;
     align-items: center;
   }
@@ -91,43 +133,40 @@
     max-width: none;
   }
 
-  .product-image {
-    width: 100%;
-    height: auto;
-  }
-
   .text-container {
-    margin-left: 0; /* Remove left margin for smaller screens */
-    text-align: center; /* Center-align text for better readability */
+    margin-left: 0;
+    text-align: center;
   }
 
   .text-container .paragraph {
-    font-size: 32px; /* Adjust font size for smaller screens */
+    font-size: 32px;
   }
 
   .text-container .paragraph-virtual {
-    font-size: 14px; /* Adjust font size for smaller screens */
+    font-size: 14px;
   }
 }
 
-@media (max-width: 480px) { /* Mobile devices */
+@media (max-width: 480px) {
   .product-card {
-    padding: 10px; /* Adjust padding for smaller screens */
+    padding: 10px;
   }
 
   .jersey-selection {
-    margin-right: 0; /* Remove margin for smaller screens */
+    margin-right: 0;
   }
 
   .toggle-image {
-    width: 50px; /* Adjust image size for mobile screens */
+    width: 50px;
   }
 
   .text-container .paragraph {
-    font-size: 24px; /* Further adjust font size for mobile screens */
+    font-size: 24px;
   }
 
   .text-container .paragraph-virtual {
-    font-size: 12px; /* Further adjust font size for mobile screens */
+    font-size: 12px;
   }
 }
+
+

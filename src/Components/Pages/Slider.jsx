@@ -5,14 +5,14 @@ import { useNavigate } from 'react-router-dom';
 import '../Pages/Slidingpic.css';
 
 // Import all images
-import red from '../Assets/red.png';  
-import blue from '../Assets/casual-men-short-pants.png';
-import green from '../Assets/frock1.png';
+import babygirl from '../Assets/babygirl.png';  
+import blue from '../Assets/model-posing.png';
+import green from '../Assets/top-short-skirt.png';
 import purple from '../Assets/download.png';
 
 // Define the models array with images
 const models = [
-  { id: 1, image: red, name: 'Red' },
+  { id: 1, image: babygirl, name: 'BabyGirl' }, // Add BabyGirl model
   { id: 2, image: blue, name: 'Blue' },
   { id: 3, image: green, name: 'Green' },
   { id: 4, image: purple, name: 'Purple' }
@@ -24,17 +24,43 @@ function Slider() {
   const imagesToShow = 2; // Number of images to show initially
   const navigate = useNavigate(); // For routing
 
-  const handlePurpleClick = () => {
-    setSlideOut(true); // Trigger the slide-out animation
-    // Delay the navigation until the animation completes (e.g., 500ms)
+  const handleHealthyNavigation = () => {
+    setSlideOut(true); 
     setTimeout(() => {
-      navigate('/virtual'); // Navigate to the virtual page
+      navigate('/healty'); // Navigate to the Healthy.jsx page
+    }, 400);
+  };
+
+  const handlePurpleNavigation = () => {
+    setSlideOut(true); 
+    setTimeout(() => {
+      navigate('/virtual'); // Navigate to the virtual page for Purple
+    }, 400);
+  };
+
+  const handleShortSkirtNavigation = () => {
+    setSlideOut(true); 
+    setTimeout(() => {
+      navigate('/shortskirt'); // Navigate to ShortSkirt page
+    }, 400);
+  };
+
+  const handleBabyGirlNavigation = () => {
+    setSlideOut(true); 
+    setTimeout(() => {
+      navigate('/baby'); // Navigate to BabyGirl.jsx page
     }, 400);
   };
 
   const handleClick = (model) => {
     if (model.name === 'Purple') {
-      handlePurpleClick();
+      handlePurpleNavigation();
+    } else if (model.name === 'Blue') {
+      handleHealthyNavigation();
+    } else if (model.name === 'Green') {
+      handleShortSkirtNavigation();
+    } else if (model.name === 'BabyGirl') {
+      handleBabyGirlNavigation(); // Navigate to BabyGirl.jsx page
     }
   };
 
@@ -69,7 +95,7 @@ function Slider() {
               key={model.id} 
               src={model.image} 
               alt={model.name} 
-              onClick={() => handleClick(model)} // Handle Purple image click
+              onClick={() => handleClick(model)} // Handle click on images
             />
           ))}
         </div>
