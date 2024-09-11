@@ -8,6 +8,7 @@ import NavigationDress from './Components/Pages/NavigationDress';
 import BabyGirl from './Components/Pages/BabyGirl';
 import Healthy from './Components/Pages/Healthy';
 import ShortSkirt from './Components/Pages/ShortSkirt';
+import WebcamCapture from './Components/Pages/WebcamCapture';
 
 const PageRoute = () => {
   return (
@@ -22,6 +23,7 @@ const PageRoute = () => {
             <Route path="/baby" element={<BabyGirl />} />
             <Route path="/healty" element={<Healthy />} />
             <Route path="/ShortSkirt" element={<ShortSkirt />} />
+            <Route path="/webcam" element={<WebcamCapture />} />
         
           </Routes>
         </Router>

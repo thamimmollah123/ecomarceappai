@@ -80,3 +80,22 @@
 .dropdown-item:hover {
     background-color: #f1f1f1;
 }
+.camera-box {
+    position: absolute;
+    top: 50px;
+    left: 100px;
+    width: 200px;
+    height: 200px;
+    background-color: #fff;
+    border: 2px solid #ccc;
+    padding: 10px;
+    z-index: 10;
+}
+
+.camera-box video {
+    width: 100%;
+    height: auto;
+}
+.capture-images{
+    margin-bottom: -26px;
+}
