@@ -35,9 +35,9 @@ const WebcamCapture = ({ onCapture }) => {
           const predictions = await model.estimateFaces(video, false);
 
           const canvas = canvasRef.current;
-          if (!canvas) return; // Ensure canvas is available
+          if (!canvas) return;
           const ctx = canvas.getContext('2d');
-          if (!ctx) return; // Ensure context is available
+          if (!ctx) return;
 
           ctx.clearRect(0, 0, canvas.width, canvas.height);
 
@@ -45,8 +45,7 @@ const WebcamCapture = ({ onCapture }) => {
           canvas.height = video.videoHeight;
 
           if (predictions.length > 0) {
-            const prediction = predictions[0]; // Use the first detected face
-
+            const prediction = predictions[0];
             const [x, y, width, height] = prediction.topLeft.concat(prediction.bottomRight).flat();
             ctx.strokeStyle = 'yellow';
             ctx.lineWidth = 4;
@@ -72,39 +71,49 @@ const WebcamCapture = ({ onCapture }) => {
   }, []);
 
   const capture = () => {
-    if (!faceBoundingBox) return; // Exit if no face is detected
+    if (!faceBoundingBox) return;
 
-    const canvas = document.createElement('canvas');
-    canvas.width = faceBoundingBox.width;
-    canvas.height = faceBoundingBox.height;
-    const ctx = canvas.getContext('2d');
     const video = videoRef.current;
+    const canvas = document.createElement('canvas');
+    // Set canvas size to the detected face size
+    const scaleFactor = 0.5; // Scale down the size of the final image
+    canvas.width = faceBoundingBox.width * scaleFactor;
+    canvas.height = faceBoundingBox.height * scaleFactor;
 
-    if (!ctx) return; // Ensure context is available
+    const ctx = canvas.getContext('2d');
+    if (!ctx) return;
 
+    // Draw the face (cropped without the background) onto a small canvas
     ctx.drawImage(
       video,
       faceBoundingBox.x, faceBoundingBox.y,
       faceBoundingBox.width, faceBoundingBox.height,
       0, 0,
-      faceBoundingBox.width, faceBoundingBox.height
+      canvas.width, canvas.height
     );
 
+    // Convert the cropped face to a PNG image
     const imageSrc = canvas.toDataURL('image/png');
+
+    // Call the onCapture function passed as a prop to return the cropped image
     onCapture(imageSrc);
   };
 
   return (
     <div style={{ position: 'relative', textAlign: 'center' }}>
-      <video ref={videoRef} autoPlay style={{ width: '100%' }} />
+      <video
+        ref={videoRef}
+        autoPlay
+        style={{ width: '150px', height: '100px', borderRadius: '10px' }} // Adjust camera size here
+      />
       <canvas
         ref={canvasRef}
         style={{
           position: 'absolute',
           top: 0,
           left: 0,
-          width: '100%',
-          height: '100%',
+          width: '150px',
+          height: '100px',
         }}
       />
       <button
@@ -114,10 +123,8 @@ const WebcamCapture = ({ onCapture }) => {
         style={{
           position: 'absolute',
           bottom: '10px',
-         
           left: '50%',
           transform: 'translateX(-50%)',
-      
           backgroundColor: 'blue',
           color: 'white',
           border: 'none',

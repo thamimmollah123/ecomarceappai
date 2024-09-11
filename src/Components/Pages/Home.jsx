@@ -5,8 +5,10 @@ import kurti1 from '../Assets/frock1.png'; // Clothing image with transparent ba
 import redkurti from '../Assets/red.png';
 import blackkurti from '../Assets/black.png';
 import Nav from './Nav';
+import WebcamCapture from './WebcamCapture'; // Import WebcamCapture component
 
 const Home = () => {
+  
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
   const [selectedKurti, setSelectedKurti] = useState(kurti1); // Set default to 'frock1'
   const outputCanvasRef = useRef(null);
@@ -17,6 +19,11 @@ const Home = () => {
     heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
     description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
   });
+  
+  // Handle webcam image capture
+  const handleCapture = (capturedImageSrc) => {
+    setFinalImageSrc(capturedImageSrc); // Set the captured face image
+  };
 
   useEffect(() => {
     const canvas = outputCanvasRef.current;
@@ -82,6 +89,13 @@ const Home = () => {
 
       <div className="home">
         <div className='container-home'>
+          
+          {/* Webcam Capture Component added to the left side */}
+          <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
+            <WebcamCapture onCapture={handleCapture} />
+          </div>
+
+          {/* Jersey selection buttons */}
           <div className="jersey-selection">
             <button
               onClick={() => handleImageClick(kurti1, 0.47, 0.5, 0.269, 0.21)} 
@@ -93,7 +107,7 @@ const Home = () => {
               onClick={() => handleImageClick(redkurti, 0.69, 0.5, 0.15, 0.199)} 
               className={`jersey-btn ${selectedKurti === redkurti ? 'selected' : ''}`}
             >
-              <img src={redkurti} alt="Red" className="toggle-image" />
+              <img src={redkurti} alt="Red Kurti" className="toggle-image" />
             </button><br />
             <button
               onClick={() => handleImageClick(blackkurti, 0.57, 0.5, 0.199, 0.14)} 
