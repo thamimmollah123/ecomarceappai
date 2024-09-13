@@ -8,6 +8,7 @@ const WebcamCapture = ({ onCapture }) => {
   const canvasRef = useRef(null);
   const [faceBoundingBox, setFaceBoundingBox] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
+  const [isCameraOn, setIsCameraOn] = useState(false); // New state for camera toggle
 
   useEffect(() => {
     const loadModelAndDetectFaces = async () => {
@@ -61,21 +62,26 @@ const WebcamCapture = ({ onCapture }) => {
       detect();
     };
 
-    loadModelAndDetectFaces();
+    if (isCameraOn) {
+      loadModelAndDetectFaces();
+    } else {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+    }
 
     return () => {
       if (videoRef.current && videoRef.current.srcObject) {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
-  }, []);
+  }, [isCameraOn]); // Re-run effect when camera is toggled
 
   const capture = () => {
     if (!faceBoundingBox) return;
 
     const video = videoRef.current;
     const canvas = document.createElement('canvas');
-    // Set canvas size to the detected face size
     const scaleFactor = 0.5; // Scale down the size of the final image
     canvas.width = faceBoundingBox.width * scaleFactor;
     canvas.height = faceBoundingBox.height * scaleFactor;
@@ -83,7 +89,6 @@ const WebcamCapture = ({ onCapture }) => {
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
 
-    // Draw the face (cropped without the background) onto a small canvas
     ctx.drawImage(
       video,
       faceBoundingBox.x, faceBoundingBox.y,
@@ -92,20 +97,27 @@ const WebcamCapture = ({ onCapture }) => {
       canvas.width, canvas.height
     );
 
-    // Convert the cropped face to a PNG image
     const imageSrc = canvas.toDataURL('image/png');
-
-    // Call the onCapture function passed as a prop to return the cropped image
     onCapture(imageSrc);
+  };
+
+  const toggleCamera = () => {
+    setIsCameraOn((prev) => !prev); // Toggle camera on/off
   };
 
   return (
     <div style={{ position: 'relative', textAlign: 'center' }}>
-      <video
-        ref={videoRef}
-        autoPlay
-        style={{ width: '150px', height: '100px', borderRadius: '10px' }} // Adjust camera size here
-      />
+      {isCameraOn ? (
+        <video
+          ref={videoRef}
+          autoPlay
+          style={{ width: '150px', height: '100px', borderRadius: '10px' }}
+        />
+      ) : (
+        <div style={{ width: '150px', height: '100px', backgroundColor: '#000', borderRadius: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
+          Camera Off
+        </div>
+      )}
       <canvas
         ref={canvasRef}
         style={{
@@ -117,9 +129,9 @@ const WebcamCapture = ({ onCapture }) => {
         }}
       />
       <button
-        className='capture-images'
+        className="capture-images"
         onClick={capture}
-        disabled={isLoading}
+        disabled={isLoading || !isCameraOn}
         style={{
           position: 'absolute',
           bottom: '10px',
@@ -134,6 +146,24 @@ const WebcamCapture = ({ onCapture }) => {
       >
         {isLoading ? 'Loading...' : 'Capture Photo'}
       </button>
+      <button
+       className="capture-images"
+        onClick={toggleCamera}
+        style={{
+          position: 'absolute',
+          top: '7rem',
+          left: '50%',
+          transform: 'translateX(-50%)',
+          backgroundColor: isCameraOn ? 'red' : 'green',
+          color: 'white',
+          border: 'none',
+          borderRadius: '5px',
+          cursor: 'pointer',
+          marginTop: '10px',
+        }}
+      >
+        {isCameraOn ? 'Turn Camera Off' : 'Turn Camera On'}
+      </button> 
     </div>
   );
 };

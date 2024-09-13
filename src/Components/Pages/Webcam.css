@@ -1,0 +1,100 @@
+/* Container for the webcam and file upload section */
+.webcam-capture-container {
+    max-width: 150px;
+    margin: 0 auto;
+    padding: 20px;
+    background-color: #f8f9fa;
+    border-radius: 15px;
+    box-shadow: 0px 4px 12px rgba(0, 0, 0, 0.1);
+    text-align: center;
+  }
+  
+  /* Video feed styling */
+  .video-feed, .uploaded-image-preview {
+    width: 75%;
+    height: auto;
+    border-radius: 10px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  /* Placeholder when the camera is off */
+  .camera-off-placeholder {
+    width: 80%;
+    height: 100px;
+    background-color: #343a40;
+    border-radius: 10px;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    color: #ffffff;
+    font-size: 18px;
+    box-shadow: 0px 4px 6px rgba(0, 0, 0, 0.2);
+    margin-bottom: 20px;
+  }
+  
+  /* Overlay on top of the video feed */
+  .video-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%; /* Adjusted to match video size */
+    height: 100%; /* Adjusted to match video size */
+    pointer-events: none;
+    border-radius: 10px;
+  }
+  
+  
+  /* Button styling */
+  .control-button {
+    background-color: #007bff;
+    color: white;
+    padding: 10px 20px;
+    margin: 10px 0;
+    border: none;
+    border-radius: 5px;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+    font-size: 10px;
+    width: 80%;
+  }
+  
+  .control-button:hover {
+    background-color: #0056b3;
+  }
+  
+  /* Specific color for turn on/off camera buttons */
+  .control-button.on {
+    background-color: #28a745;
+  }
+  
+  .control-button.off {
+    background-color: #dc3545;
+  }
+  
+  .control-button:disabled {
+    background-color: #ccc;
+    cursor: not-allowed;
+  }
+  
+  /* File upload input */
+  .upload-input {
+    margin-bottom: 10px;
+    width: 70%;
+    padding: 10px;
+    border-radius: 5px;
+    border: 1px solid #ccc;
+  }
+  
+  /* Control section for buttons */
+  .controls {
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+  }
+  
+  /* File upload section */
+  .upload-section {
+    margin-top: 20px;
+  }
+  

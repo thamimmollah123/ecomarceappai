@@ -1,23 +1,37 @@
 import React, { useState, useRef, useEffect } from 'react';
-import '../Pages/Home.css'; // Assuming you have corresponding styles
-import humanBaseImage from '../Assets/male-beauty.png'; // Base image with human figure
-import sweater from '../Assets/sweater.png'; // Clothing image: sweater
-import Suit from '../Assets/Suit.png'; // Clothing image: suit
-import Shorts1 from '../Assets/Shorts1.png'; // Clothing image: shorts
-import Nav from './Nav'; // Navbar component
+import '../Pages/Home.css';
+import humanBaseImage from '../Assets/male-beauty.png';
+import sweater from '../Assets/sweater.png';
+import Suit from '../Assets/Suit.png';
+import Shorts1 from '../Assets/Shorts1.png';
+import Nav from './Nav';
+import WebcamCapture from './WebcamCapture'; // Webcam component
 
-const Home = () => {
-  const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage); // State for storing the combined image
-  const [selectedClothing, setSelectedClothing] = useState(null); // State for selected additional clothing item
-  const [isShortsVisible, setIsShortsVisible] = useState(true); // State to toggle Shorts1 visibility
-  const outputCanvasRef = useRef(null); // Canvas reference
+const Men = () => {
+  const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
+  const [selectedClothing, setSelectedClothing] = useState(null);
+  const [capturedImageSrc, setCapturedImageSrc] = useState(null); // For captured face image
+  const [isShortsVisible, setIsShortsVisible] = useState(true);
+  const outputCanvasRef = useRef(null);
 
-  // Function to draw the base image, Shorts1 (conditionally), and optionally other clothing
+  // Dynamic content for text with explicit <br/> tags
+  const [textContent, setTextContent] = useState({
+    title: "VIRTUAL DRESSING ROOM",
+    heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
+    description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
+  });
+
+
+  // Handle captured face image
+  const handleCapture = (capturedImageSrc) => {
+    setCapturedImageSrc(capturedImageSrc);
+  };
+
+  // Draw base image, Shorts1 (conditionally), and any selected clothing
   const drawClothingOnCanvas = (clothingImageSrc = null, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
     const canvas = outputCanvasRef.current;
     const ctx = canvas.getContext('2d');
 
-    // Draw the base image
     const baseImage = new Image();
     baseImage.src = humanBaseImage;
     baseImage.onload = () => {
@@ -25,19 +39,16 @@ const Home = () => {
       canvas.height = baseImage.height;
       ctx.drawImage(baseImage, 0, 0);
 
-      // Conditionally draw Shorts1 if it's visible
       if (isShortsVisible) {
         const shortsImage = new Image();
         shortsImage.src = Shorts1;
         shortsImage.onload = () => {
-          const shortsWidth = baseImage.width * 0.32;  // Adjust width factor for Shorts1
-          const shortsHeight = baseImage.height * 0.23; // Adjust height factor for Shorts1
-          const shortsXPos = baseImage.width * 0.37;    // Adjust xPos factor for Shorts1
-          const shortsYPos = baseImage.height * 0.46;   // Adjust yPos factor for Shorts1
-
+          const shortsWidth = baseImage.width * 0.32;
+          const shortsHeight = baseImage.height * 0.23;
+          const shortsXPos = baseImage.width * 0.37;
+          const shortsYPos = baseImage.height * 0.46;
           ctx.drawImage(shortsImage, shortsXPos, shortsYPos, shortsWidth, shortsHeight);
 
-          // If an additional clothing item is selected, draw it on top
           if (clothingImageSrc) {
             const clothingImage = new Image();
             clothingImage.src = clothingImageSrc;
@@ -46,16 +57,28 @@ const Home = () => {
               const height = baseImage.height * heightFactor;
               const xPos = baseImage.width * xPosFactor;
               const yPos = baseImage.height * yPosFactor;
-
               ctx.drawImage(clothingImage, xPos, yPos, width, height);
-              setFinalImageSrc(canvas.toDataURL()); // Update the final image with the combined image
+
+              if (capturedImageSrc) {
+                const faceImg = new Image();
+                faceImg.src = capturedImageSrc;
+                faceImg.onload = () => {
+                  const faceWidth = baseImage.width * 0.10;
+                  const faceHeight = baseImage.height * 0.09;
+                  const faceXPos = baseImage.width * 0.45;
+                  const faceYPos = baseImage.height * 0.09;
+                  ctx.drawImage(faceImg, 0, 0, faceImg.width, faceImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
+                  setFinalImageSrc(canvas.toDataURL());
+                };
+              } else {
+                setFinalImageSrc(canvas.toDataURL());
+              }
             };
           } else {
-            setFinalImageSrc(canvas.toDataURL()); // Update the final image with just Shorts1 and the base image
+            setFinalImageSrc(canvas.toDataURL());
           }
         };
       } else {
-        // If Shorts1 is not visible, draw only the selected clothing
         if (clothingImageSrc) {
           const clothingImage = new Image();
           clothingImage.src = clothingImageSrc;
@@ -64,56 +87,82 @@ const Home = () => {
             const height = baseImage.height * heightFactor;
             const xPos = baseImage.width * xPosFactor;
             const yPos = baseImage.height * yPosFactor;
-
             ctx.drawImage(clothingImage, xPos, yPos, width, height);
-            setFinalImageSrc(canvas.toDataURL()); // Update the final image
+            if (capturedImageSrc) {
+              const faceImg = new Image();
+              faceImg.src = capturedImageSrc;
+              faceImg.onload = () => {
+                // Adjust these values to add space from the right and bottom
+                const paddingRight = 30; // Adjust this value to add more right padding
+                const paddingBottom = 20; // Adjust this value to add more bottom padding
+            
+                const faceWidth = baseImage.width * 0.10; // Face width is 10% of base image width
+                const faceHeight = baseImage.height * 0.09; // Face height is 9% of base image height
+            
+                // Adjust the X and Y position with padding
+                const faceXPos = baseImage.width * 0.52 - paddingRight; // Move the face to the left for right padding
+                const faceYPos = baseImage.height * 0.09 - paddingBottom; // Move the face up for bottom padding
+            
+                // Draw the face image on the canvas with adjusted position
+                ctx.drawImage(faceImg, 0, 0, faceImg.width, faceImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
+            
+                // Set the final image source
+                setFinalImageSrc(canvas.toDataURL());
+              };
+            } else {
+              setFinalImageSrc(canvas.toDataURL());
+            }
+            
           };
         } else {
-          setFinalImageSrc(canvas.toDataURL()); // Update with only the base image if no other clothing is selected
+          setFinalImageSrc(canvas.toDataURL());
         }
       }
     };
   };
 
-  // On component mount, draw the base image with Shorts1
   useEffect(() => {
     drawClothingOnCanvas();
-  }, [isShortsVisible]); // Redraw when isShortsVisible state changes
+  }, [isShortsVisible]);
 
-  // Handle clothing selection and redraw
   const handleImageClick = (clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
-    setSelectedClothing(clothingImageSrc); // Update the selected clothing state
-    drawClothingOnCanvas(clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor); // Redraw with selected clothing
+    setSelectedClothing(clothingImageSrc);
+    drawClothingOnCanvas(clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor);
   };
 
-  // Toggle Shorts1 visibility
   const toggleShortsVisibility = () => {
-    setIsShortsVisible(!isShortsVisible); // Toggle the shorts on or off
-    drawClothingOnCanvas(selectedClothing); // Redraw with the current selected clothing and shorts state
+    setIsShortsVisible(!isShortsVisible);
+    drawClothingOnCanvas(selectedClothing);
   };
 
   return (
     <>
-      <Nav /> {/* Navigation bar */}
+      <Nav />
       <div className="home">
+      <div className='container-home'>
+        {/* Webcam Capture Component */}
+        <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
+          <WebcamCapture onCapture={handleCapture} />
+        </div>
+
         <div className="jersey-selection">
-          {/* Sweater Button */}
+          {/* Sweater */}
           <button
-            onClick={() => handleImageClick(sweater, 0.5, 0.3, 0.3, 0.26)} // Adjust as necessary
+            onClick={() => handleImageClick(sweater, 0.5, 0.3, 0.3, 0.26)}
             className={`jersey-btn ${selectedClothing === sweater ? 'selected' : ''}`}
           >
             <img src={sweater} alt="Sweater" className="toggle-image" />
           </button>
           <br />
-          {/* Suit Button */}
+          {/* Suit */}
           <button
-            onClick={() => handleImageClick(Suit, 0.36, 0.33, 0.37, 0.242)} // Adjust as necessary
+            onClick={() => handleImageClick(Suit, 0.36, 0.33, 0.37, 0.242)}
             className={`jersey-btn ${selectedClothing === Suit ? 'selected' : ''}`}
           >
             <img src={Suit} alt="Suit" className="toggle-image" />
           </button>
           <br />
-          {/* Shorts1 Button - Toggles visibility */}
+          {/* Shorts1 Toggle */}
           <button
             onClick={toggleShortsVisibility}
             className={`jersey-btn ${isShortsVisible ? 'selected' : ''}`}
@@ -123,35 +172,26 @@ const Home = () => {
           <br />
         </div>
 
-        {/* Product card that displays the final image */}
+        {/* Final Output */}
         <div className="product-card">
           <div className="product-image-container">
-            <img
-              src={finalImageSrc}
-              alt="Human Figure"
-              className="product-image"
-            />
-            <canvas ref={outputCanvasRef} style={{ display: 'none' }}></canvas> {/* Hidden canvas */}
+            <img src={finalImageSrc} alt="Human Figure" className="product-image" />
+            <canvas ref={outputCanvasRef} style={{ display: 'none' }} />
           </div>
-        </div>
-
-        {/* Information text section */}
-        <div className="text-container">
-          <p className="title">VIRTUAL DRESSING ROOM</p>
-          <h1 className="paragraph">
-            One-size-fits-all <br /> doesn’t work for <br /> fashion. Or eCommerce <br /> models.
-          </h1>
-          <p className="paragraph-virtual">
-            Virtual Dressing Room solves one of the biggest hassles in
-            <br />
-            online fashion shopping. Help your shoppers view
-            <br />
-            products on models that are most similar to them.
-          </p>
+          
+       
+        
         </div>
       </div>
+       {/* Text container with dynamic content and line breaks */}
+       <div className="text-container">
+          <p className="title">{textContent.title}</p>
+          <h1 className="paragraph" dangerouslySetInnerHTML={{ __html: textContent.heading }}></h1>
+          <p className="paragraph-virtual" dangerouslySetInnerHTML={{ __html: textContent.description }}></p>
+        </div>
+        </div>
     </>
   );
 };
 
-export default Home;
+export default Men;
