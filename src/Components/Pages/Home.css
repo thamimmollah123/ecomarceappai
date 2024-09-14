@@ -18,7 +18,7 @@
   align-items: center;
   height: 80vh;
   background-color: white;
-  margin-left: 54rem;  /* This might need adjustment or be handled differently for better responsiveness */
+  margin-left: 45rem;  /* This might need adjustment or be handled differently for better responsiveness */
 }
 
 .product-card {

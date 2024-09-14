@@ -1,14 +1,15 @@
 import React, { useRef, useEffect, useState } from 'react';
 import * as blazeface from '@tensorflow-models/blazeface';
 import '@tensorflow/tfjs';
-import '../Pages/Nav.css';
+import '../Pages/Webcam.css';
 
 const WebcamCapture = ({ onCapture }) => {
   const videoRef = useRef(null);
   const canvasRef = useRef(null);
   const [faceBoundingBox, setFaceBoundingBox] = useState(null);
   const [isLoading, setIsLoading] = useState(true);
-  const [isCameraOn, setIsCameraOn] = useState(false); // New state for camera toggle
+  const [isCameraOn, setIsCameraOn] = useState(false);
+  const [uploadedImage, setUploadedImage] = useState(null);
 
   useEffect(() => {
     const loadModelAndDetectFaces = async () => {
@@ -75,14 +76,14 @@ const WebcamCapture = ({ onCapture }) => {
         videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
       }
     };
-  }, [isCameraOn]); // Re-run effect when camera is toggled
+  }, [isCameraOn]);
 
   const capture = () => {
     if (!faceBoundingBox) return;
 
     const video = videoRef.current;
     const canvas = document.createElement('canvas');
-    const scaleFactor = 0.5; // Scale down the size of the final image
+    const scaleFactor = 0.5; 
     canvas.width = faceBoundingBox.width * scaleFactor;
     canvas.height = faceBoundingBox.height * scaleFactor;
 
@@ -102,68 +103,117 @@ const WebcamCapture = ({ onCapture }) => {
   };
 
   const toggleCamera = () => {
-    setIsCameraOn((prev) => !prev); // Toggle camera on/off
+    setIsCameraOn((prev) => !prev);
+  };
+
+  const handleFileUpload = async (e) => {
+    const file = e.target.files[0];
+    if (file) {
+      const reader = new FileReader();
+      reader.onloadend = async () => {
+        const image = new Image();
+        image.src = reader.result;
+        image.onload = async () => {
+          setUploadedImage(reader.result); // Show uploaded image in preview
+          
+          const model = await blazeface.load(); // Load the BlazeFace model
+          
+          const canvas = document.createElement('canvas');
+          const ctx = canvas.getContext('2d');
+          canvas.width = image.width;
+          canvas.height = image.height;
+          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+
+          const predictions = await model.estimateFaces(canvas, false); // Run face detection
+          
+          if (predictions.length > 0) {
+            const prediction = predictions[0];
+            const [x, y, width, height] = prediction.topLeft.concat(prediction.bottomRight).flat();
+            setFaceBoundingBox({ x, y, width: width - x, height: height - y });
+
+            ctx.strokeStyle = 'yellow';
+            ctx.lineWidth = 4;
+            ctx.strokeRect(x, y, width - x, height - y);
+          } else {
+            alert('No face detected in the uploaded image.');
+          }
+        };
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const captureUploadedImage = () => {
+    if (!uploadedImage || !faceBoundingBox) return;
+
+    const img = new Image();
+    img.src = uploadedImage;
+    img.onload = () => {
+      const canvas = document.createElement('canvas');
+      const scaleFactor = 0.5; 
+      canvas.width = faceBoundingBox.width * scaleFactor;
+      canvas.height = faceBoundingBox.height * scaleFactor;
+
+      const ctx = canvas.getContext('2d');
+      if (!ctx) return;
+
+      ctx.drawImage(
+        img,
+        faceBoundingBox.x, faceBoundingBox.y,
+        faceBoundingBox.width, faceBoundingBox.height,
+        0, 0,
+        canvas.width, canvas.height
+      );
+
+      const imageSrc = canvas.toDataURL('image/png');
+      onCapture(imageSrc); 
+    };
   };
 
   return (
-    <div style={{ position: 'relative', textAlign: 'center' }}>
-      {isCameraOn ? (
-        <video
-          ref={videoRef}
-          autoPlay
-          style={{ width: '150px', height: '100px', borderRadius: '10px' }}
-        />
-      ) : (
-        <div style={{ width: '150px', height: '100px', backgroundColor: '#000', borderRadius: '10px', display: 'flex', justifyContent: 'center', alignItems: 'center', color: 'white' }}>
-          Camera Off
-        </div>
-      )}
-      <canvas
-        ref={canvasRef}
-        style={{
-          position: 'absolute',
-          top: 0,
-          left: 0,
-          width: '150px',
-          height: '100px',
-        }}
-      />
-      <button
-        className="capture-images"
-        onClick={capture}
-        disabled={isLoading || !isCameraOn}
-        style={{
-          position: 'absolute',
-          bottom: '10px',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          backgroundColor: 'blue',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-        }}
-      >
-        {isLoading ? 'Loading...' : 'Capture Photo'}
-      </button>
-      <button
-       className="capture-images"
-        onClick={toggleCamera}
-        style={{
-          position: 'absolute',
-          top: '7rem',
-          left: '50%',
-          transform: 'translateX(-50%)',
-          backgroundColor: isCameraOn ? 'red' : 'green',
-          color: 'white',
-          border: 'none',
-          borderRadius: '5px',
-          cursor: 'pointer',
-          marginTop: '10px',
-        }}
-      >
-        {isCameraOn ? 'Turn Camera Off' : 'Turn Camera On'}
-      </button> 
+    <div className="webcam-capture-container">
+      <div className="webcam-display">
+        {isCameraOn ? (
+          <>
+            <video ref={videoRef} autoPlay className="video-feed" />
+            <canvas ref={canvasRef} className="video-overlay" />
+          </>
+        ) : uploadedImage ? (
+          <img src={uploadedImage} alt="Uploaded Preview" className="uploaded-image-preview" />
+        ) : (
+          <div className="camera-off-placeholder">
+            Camera Off
+          </div>
+        )}
+      </div>
+
+      <div className="controls">
+        <button
+          className="control-button"
+          onClick={capture}
+          disabled={isLoading || !isCameraOn}
+        >
+          {isLoading ? 'Loading...' : 'Capture Photo'}
+        </button>
+
+        <button
+          className={`control-button ${isCameraOn ? 'off' : 'on'}`}
+          onClick={toggleCamera}
+        >
+          {isCameraOn ? 'Turn Camera Off' : 'Turn Camera On'}
+        </button>
+      </div>
+
+      <div className="upload-section">
+        <input type="file" accept="image/*" onChange={handleFileUpload} className="upload-input" />
+        <button
+          className="control-button"
+          onClick={captureUploadedImage}
+          disabled={!uploadedImage}
+        >
+          Capture Uploaded Image
+        </button>
+      </div>
     </div>
   );
 };
