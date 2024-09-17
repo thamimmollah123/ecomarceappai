@@ -5,11 +5,18 @@ import YellowDress from '../Assets/YellowDress.png'; // Clothing image with tran
 import blackshort from '../Assets/blackshort.png';
 import whitefrock from '../Assets/whitefrock.png';
 import Nav from './Nav';
+import WebcamCapture from './WebcamCapture'; // Import WebcamCapture component
 
 const Healthy = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
   const [selectedKurti, setSelectedKurti] = useState(null); // No default selected dress
+  const [capturedImageSrc, setCapturedImageSrc] = useState(null); // Store captured face image
   const outputCanvasRef = useRef(null);
+
+  // Handle webcam image capture
+  const handleCapture = (capturedImageSrc) => {
+    setCapturedImageSrc(capturedImageSrc); 
+  };
 
   useEffect(() => {
     const canvas = outputCanvasRef.current;
@@ -21,7 +28,7 @@ const Healthy = () => {
       canvas.height = img.height;
       ctx.drawImage(img, 0, 0);
 
-      // Draw selected dress if any, otherwise just the human image
+      // Draw selected dress if any
       if (selectedKurti) {
         const clothingImg = new Image();
         clothingImg.src = selectedKurti.src;
@@ -30,15 +37,34 @@ const Healthy = () => {
           const height = img.height * selectedKurti.heightFactor;
           const xPos = img.width * selectedKurti.xPosFactor;
           const yPos = img.height * selectedKurti.yPosFactor;
-          
+
           ctx.drawImage(clothingImg, xPos, yPos, width, height);
-          setFinalImageSrc(canvas.toDataURL());
+
+          // If a face has been captured, overlay the captured face on the base image
+          if (capturedImageSrc) {
+            const capturedImg = new Image();
+            capturedImg.src = capturedImageSrc;
+            capturedImg.onload = () => {
+              // Adjust these values to place the face in the desired position
+              const faceWidth = img.width * 0.14;  // 10% of base image width
+              const faceHeight = img.height * 0.10; // 9% of base image height
+              const faceXPos = img.width * 0.45; // Adjust to move face right/left
+              const faceYPos = img.height * 0.08; // Adjust to move face up/down
+
+              // Draw the smaller face image onto the canvas
+              ctx.drawImage(capturedImg, 0, 0, capturedImg.width, capturedImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
+
+              setFinalImageSrc(canvas.toDataURL());
+            };
+          } else {
+            setFinalImageSrc(canvas.toDataURL()); // Just the base image and dress
+          }
         };
       } else {
-        setFinalImageSrc(canvas.toDataURL()); // Just the base image
+        setFinalImageSrc(canvas.toDataURL()); // Just the base image if no clothing selected
       }
     };
-  }, [selectedKurti]); // Re-run when selectedKurti changes
+  }, [selectedKurti, capturedImageSrc]); // Re-run when selectedKurti or capturedImageSrc changes
 
   const handleImageClick = (clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
     setSelectedKurti({ src: clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor });
@@ -49,27 +75,34 @@ const Healthy = () => {
       <Nav />
 
       <div className="home">
+        {/* Webcam Capture Component */}
+        <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
+          <WebcamCapture onCapture={handleCapture} />
+        </div>
+
+        {/* Dress selection buttons */}
         <div className="jersey-selection">
           <button
             onClick={() => handleImageClick(YellowDress, 1.0, 0.678, 0.12, 0.13)} 
             className={`jersey-btn ${selectedKurti && selectedKurti.src === YellowDress ? 'selected' : ''}`}
           >
-            <img src={YellowDress} alt="YellowDress 1" className="toggle-image" />
+            <img src={YellowDress} alt="Yellow Dress" className="toggle-image" />
           </button><br />
           <button
             onClick={() => handleImageClick(blackshort, 0.65, 0.64, 0.25, 0.12)} 
             className={`jersey-btn ${selectedKurti && selectedKurti.src === blackshort ? 'selected' : ''}`}
           >
-            <img src={blackshort} alt="blackshort" className="toggle-image" />
+            <img src={blackshort} alt="Black Short" className="toggle-image" />
           </button><br />
           <button
             onClick={() => handleImageClick(whitefrock,  0.65, 0.6, 0.29, 0.15)} 
             className={`jersey-btn ${selectedKurti && selectedKurti.src === whitefrock ? 'selected' : ''}`}
           >
-            <img src={whitefrock} alt="Black Dress" className="toggle-image" />
+            <img src={whitefrock} alt="White Frock" className="toggle-image" />
           </button>
         </div>
 
+        {/* Canvas with human figure, dress, and optional captured face */}
         <div className="product-card">
           <div className="product-image-container">
             <img

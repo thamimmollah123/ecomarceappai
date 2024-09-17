@@ -63,10 +63,13 @@ const Men = () => {
                 const faceImg = new Image();
                 faceImg.src = capturedImageSrc;
                 faceImg.onload = () => {
-                  const faceWidth = baseImage.width * 0.10;
+                  const faceWidth = baseImage.width * 0.09;
                   const faceHeight = baseImage.height * 0.09;
-                  const faceXPos = baseImage.width * 0.45;
-                  const faceYPos = baseImage.height * 0.09;
+                  
+                  // Move to the right side (closer to 1 for further right)
+                  const faceXPos = baseImage.width * 0.5; // Adjust this value for positioning
+                  const faceYPos = baseImage.height * 0.16;
+                  
                   ctx.drawImage(faceImg, 0, 0, faceImg.width, faceImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
                   setFinalImageSrc(canvas.toDataURL());
                 };

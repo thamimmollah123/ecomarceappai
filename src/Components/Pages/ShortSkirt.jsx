@@ -5,11 +5,18 @@ import greyfrock from '../Assets/greyfrock.png'; // Clothing image with transpar
 import BlueGaun from '../Assets/BlueGaun.png';
 import prusian from '../Assets/prusian.png';
 import Nav from './Nav';
+import WebcamCapture from './WebcamCapture'; // Import WebcamCapture component
 
 const ShortSkirt = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
   const [selectedKurti, setSelectedKurti] = useState(null); // No default selected dress
+  const [capturedImageSrc, setCapturedImageSrc] = useState(null); // Store captured face image
   const outputCanvasRef = useRef(null);
+
+  // Handle webcam image capture
+  const handleCapture = (capturedImageSrc) => {
+    setCapturedImageSrc(capturedImageSrc); 
+  };
 
   useEffect(() => {
     const canvas = outputCanvasRef.current;
@@ -32,13 +39,32 @@ const ShortSkirt = () => {
           const yPos = img.height * selectedKurti.yPosFactor;
           
           ctx.drawImage(clothingImg, xPos, yPos, width, height);
-          setFinalImageSrc(canvas.toDataURL());
+
+          // If a face has been captured, overlay the captured face on the base image
+          if (capturedImageSrc) {
+            const capturedImg = new Image();
+            capturedImg.src = capturedImageSrc;
+            capturedImg.onload = () => {
+              // Adjust these values to place the face in the desired position
+              const faceWidth = img.width * 0.10;  // 10% of base image width
+              const faceHeight = img.height * 0.09; // 9% of base image height
+              const faceXPos = img.width * 0.55; // Adjust to move face right/left
+              const faceYPos = img.height * 0.16; // Adjust to move face up/down
+
+              // Draw the smaller face image onto the canvas
+              ctx.drawImage(capturedImg, 0, 0, capturedImg.width, capturedImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
+
+              setFinalImageSrc(canvas.toDataURL());
+            };
+          } else {
+            setFinalImageSrc(canvas.toDataURL()); // Just the base image and dress
+          }
         };
       } else {
         setFinalImageSrc(canvas.toDataURL()); // Just the base image
       }
     };
-  }, [selectedKurti]); // Re-run when selectedKurti changes
+  }, [selectedKurti, capturedImageSrc]); // Re-run when selectedKurti or capturedImageSrc changes
 
   const handleImageClick = (clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
     setSelectedKurti({ src: clothingImageSrc, widthFactor, heightFactor, xPosFactor, yPosFactor });
@@ -49,6 +75,12 @@ const ShortSkirt = () => {
       <Nav />
 
       <div className="home">
+        {/* Webcam Capture Component */}
+        <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
+          <WebcamCapture onCapture={handleCapture} />
+        </div>
+
+        {/* Dress selection buttons */}
         <div className="jersey-selection">
           <button
             onClick={() => handleImageClick(greyfrock, 0.6, 0.5, 0.32, 0.22)} 
@@ -70,6 +102,7 @@ const ShortSkirt = () => {
           </button>
         </div>
 
+        {/* Canvas with human figure, dress, and optional captured face */}
         <div className="product-card">
           <div className="product-image-container">
             <img

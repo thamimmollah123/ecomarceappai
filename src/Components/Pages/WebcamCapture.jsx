@@ -206,13 +206,15 @@ const WebcamCapture = ({ onCapture }) => {
 
       <div className="upload-section">
         <input type="file" accept="image/*" onChange={handleFileUpload} className="upload-input" />
+        <div className='button-main-upload'>
         <button
           className="control-button"
           onClick={captureUploadedImage}
           disabled={!uploadedImage}
         >
-          Capture Uploaded Image
+          Uploaded Image
         </button>
+      </div>
       </div>
     </div>
   );

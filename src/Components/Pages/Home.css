@@ -1,6 +1,6 @@
 .container-home{
 
-    background-color: #f1f0f0;
+    background-color: #e4dfe3;
     padding: 15px; /* Optional: Adds padding around the container */
     padding-left: 25px;
  
@@ -18,7 +18,7 @@
   align-items: center;
   height: 80vh;
   background-color: white;
-  margin-left: 45rem;  /* This might need adjustment or be handled differently for better responsiveness */
+  margin-left: 40rem;  /* This might need adjustment or be handled differently for better responsiveness */
 }
 
 .product-card {
@@ -106,7 +106,7 @@
 
 
 .text-container {
-  margin-left: -80rem;
+  margin-left: -81rem;
 }
 
 .text-container .paragraph {

@@ -61,6 +61,7 @@
   
   .control-button:hover {
     background-color: #0056b3;
+
   }
   
   /* Specific color for turn on/off camera buttons */
@@ -84,6 +85,7 @@
     padding: 10px;
     border-radius: 5px;
     border: 1px solid #ccc;
+   margin-right: 32px;
   }
   
   /* Control section for buttons */
@@ -92,9 +94,16 @@
     flex-direction: column;
     gap: 10px;
   }
+
+ .button-main-upload{
+  width: 95%;
+  
+
+ }
+
   
   /* File upload section */
   .upload-section {
-    margin-top: 20px;
+    margin-top: 10px;
   }
   
