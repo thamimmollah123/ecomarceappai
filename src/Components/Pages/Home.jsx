@@ -6,7 +6,7 @@ import redkurti from '../Assets/red.png';
 import blackkurti from '../Assets/black.png';
 import Nav from './Nav';
 import WebcamCapture from './WebcamCapture';
-import SkinTone from './SkinTone'; // Import the SkinTone component
+import SkinTone from '../Pages/SkinTone'; // Import the SkinTone component
 
 const Home = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);

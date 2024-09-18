@@ -5,13 +5,15 @@ import sweater from '../Assets/sweater.png';
 import Suit from '../Assets/Suit.png';
 import Shorts1 from '../Assets/Shorts1.png';
 import Nav from './Nav';
-import WebcamCapture from './WebcamCapture'; // Webcam component
+import WebcamCapture from './WebcamCapture';
+import SkinTone from './SkinTone'; // Import the SkinTone component
 
 const Men = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
   const [selectedClothing, setSelectedClothing] = useState(null);
-  const [capturedImageSrc, setCapturedImageSrc] = useState(null); // For captured face image
+  const [capturedImageSrc, setCapturedImageSrc] = useState(null);
   const [isShortsVisible, setIsShortsVisible] = useState(true);
+  const [skinToneFilter, setSkinToneFilter] = useState(''); // Skin tone filter
   const outputCanvasRef = useRef(null);
 
   // Dynamic content for text with explicit <br/> tags
@@ -20,7 +22,6 @@ const Men = () => {
     heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
     description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
   });
-
 
   // Handle captured face image
   const handleCapture = (capturedImageSrc) => {
@@ -37,6 +38,9 @@ const Men = () => {
     baseImage.onload = () => {
       canvas.width = baseImage.width;
       canvas.height = baseImage.height;
+
+      // Apply skin tone filter to base image
+      ctx.filter = skinToneFilter;
       ctx.drawImage(baseImage, 0, 0);
 
       if (isShortsVisible) {
@@ -65,11 +69,8 @@ const Men = () => {
                 faceImg.onload = () => {
                   const faceWidth = baseImage.width * 0.09;
                   const faceHeight = baseImage.height * 0.09;
-                  
-                  // Move to the right side (closer to 1 for further right)
-                  const faceXPos = baseImage.width * 0.5; // Adjust this value for positioning
+                  const faceXPos = baseImage.width * 0.5;
                   const faceYPos = baseImage.height * 0.16;
-                  
                   ctx.drawImage(faceImg, 0, 0, faceImg.width, faceImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
                   setFinalImageSrc(canvas.toDataURL());
                 };
@@ -95,27 +96,16 @@ const Men = () => {
               const faceImg = new Image();
               faceImg.src = capturedImageSrc;
               faceImg.onload = () => {
-                // Adjust these values to add space from the right and bottom
-                const paddingRight = 30; // Adjust this value to add more right padding
-                const paddingBottom = 20; // Adjust this value to add more bottom padding
-            
-                const faceWidth = baseImage.width * 0.10; // Face width is 10% of base image width
-                const faceHeight = baseImage.height * 0.09; // Face height is 9% of base image height
-            
-                // Adjust the X and Y position with padding
-                const faceXPos = baseImage.width * 0.52 - paddingRight; // Move the face to the left for right padding
-                const faceYPos = baseImage.height * 0.09 - paddingBottom; // Move the face up for bottom padding
-            
-                // Draw the face image on the canvas with adjusted position
+                const faceWidth = baseImage.width * 0.10;
+                const faceHeight = baseImage.height * 0.09;
+                const faceXPos = baseImage.width * 0.52;
+                const faceYPos = baseImage.height * 0.09;
                 ctx.drawImage(faceImg, 0, 0, faceImg.width, faceImg.height, faceXPos, faceYPos, faceWidth, faceHeight);
-            
-                // Set the final image source
                 setFinalImageSrc(canvas.toDataURL());
               };
             } else {
               setFinalImageSrc(canvas.toDataURL());
             }
-            
           };
         } else {
           setFinalImageSrc(canvas.toDataURL());
@@ -138,61 +128,67 @@ const Men = () => {
     drawClothingOnCanvas(selectedClothing);
   };
 
+  const handleSkinToneChange = (filter) => {
+    setSkinToneFilter(filter);
+    drawClothingOnCanvas(selectedClothing);
+  };
+
   return (
     <>
       <Nav />
       <div className="home">
-      <div className='container-home'>
-        {/* Webcam Capture Component */}
-        <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
-          <WebcamCapture onCapture={handleCapture} />
-        </div>
-
-        <div className="jersey-selection">
-          {/* Sweater */}
-          <button
-            onClick={() => handleImageClick(sweater, 0.5, 0.3, 0.3, 0.26)}
-            className={`jersey-btn ${selectedClothing === sweater ? 'selected' : ''}`}
-          >
-            <img src={sweater} alt="Sweater" className="toggle-image" />
-          </button>
-          <br />
-          {/* Suit */}
-          <button
-            onClick={() => handleImageClick(Suit, 0.36, 0.33, 0.37, 0.242)}
-            className={`jersey-btn ${selectedClothing === Suit ? 'selected' : ''}`}
-          >
-            <img src={Suit} alt="Suit" className="toggle-image" />
-          </button>
-          <br />
-          {/* Shorts1 Toggle */}
-          <button
-            onClick={toggleShortsVisibility}
-            className={`jersey-btn ${isShortsVisible ? 'selected' : ''}`}
-          >
-            <img src={Shorts1} alt="Shorts" className="toggle-image" />
-          </button>
-          <br />
-        </div>
-
-        {/* Final Output */}
-        <div className="product-card">
-          <div className="product-image-container">
-            <img src={finalImageSrc} alt="Human Figure" className="product-image" />
-            <canvas ref={outputCanvasRef} style={{ display: 'none' }} />
+        <div className='container-home'>
+          {/* Webcam Capture Component */}
+          <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
+            <WebcamCapture onCapture={handleCapture} />
           </div>
-          
-       
-        
+
+          <div className="jersey-selection">
+            {/* Sweater */}
+            <button
+              onClick={() => handleImageClick(sweater, 0.5, 0.3, 0.3, 0.26)}
+              className={`jersey-btn ${selectedClothing === sweater ? 'selected' : ''}`}
+            >
+              <img src={sweater} alt="Sweater" className="toggle-image" />
+            </button>
+            <br />
+            {/* Suit */}
+            <button
+              onClick={() => handleImageClick(Suit, 0.36, 0.33, 0.37, 0.242)}
+              className={`jersey-btn ${selectedClothing === Suit ? 'selected' : ''}`}
+            >
+              <img src={Suit} alt="Suit" className="toggle-image" />
+            </button>
+            <br />
+            {/* Shorts1 Toggle */}
+            <button
+              onClick={toggleShortsVisibility}
+              className={`jersey-btn ${isShortsVisible ? 'selected' : ''}`}
+            >
+              <img src={Shorts1} alt="Shorts" className="toggle-image" />
+            </button>
+            <br />
+          </div>
+
+          {/* Skin tone selection */}
+          <SkinTone onSkinToneChange={handleSkinToneChange} />
+
+          {/* Final Output */}
+          <div className="product-card">
+            <div className="product-image-container">
+              <img src={finalImageSrc} alt="Human Figure" className="product-image" />
+              <canvas ref={outputCanvasRef} style={{ display: 'none' }} />
+            </div>
+          </div>
         </div>
-      </div>
-       {/* Text container with dynamic content and line breaks */}
-       <div className="text-container">
+
+        {/* Text container with dynamic content and line breaks */}
+        <div className="text-container">
           <p className="title">{textContent.title}</p>
           <h1 className="paragraph" dangerouslySetInnerHTML={{ __html: textContent.heading }}></h1>
           <p className="paragraph-virtual" dangerouslySetInnerHTML={{ __html: textContent.description }}></p>
         </div>
-        </div>
+      </div>
     </>
   );
 };

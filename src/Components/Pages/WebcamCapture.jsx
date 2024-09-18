@@ -135,7 +135,11 @@ const WebcamCapture = ({ onCapture }) => {
             ctx.lineWidth = 4;
             ctx.strokeRect(x, y, width - x, height - y);
           } else {
-            alert('No face detected in the uploaded image.');
+            // Show the custom modal
+            const modal = document.getElementById('noFaceModal');
+            if (modal) {
+              modal.style.display = 'block';
+            }
           }
         };
       };
@@ -207,14 +211,25 @@ const WebcamCapture = ({ onCapture }) => {
       <div className="upload-section">
         <input type="file" accept="image/*" onChange={handleFileUpload} className="upload-input" />
         <div className='button-main-upload'>
-        <button
-          className="control-button"
-          onClick={captureUploadedImage}
-          disabled={!uploadedImage}
-        >
-          Uploaded Image
-        </button>
+          <button
+            className="control-button"
+            onClick={captureUploadedImage}
+            disabled={!uploadedImage}
+          >
+            Uploaded Image
+          </button>
+        </div>
       </div>
+
+      {/* Modal HTML */}
+      <div id="noFaceModal" className="modal">
+        <div className="modal-content">
+          <span className="close" onClick={() => document.getElementById('noFaceModal').style.display = 'none'}></span>
+          <div className="modal-body">
+            <p>No face detected in the uploaded image Only passport size images are allowed.</p>
+            <button className="modal-button" onClick={() => document.getElementById('noFaceModal').style.display = 'none'}>OK</button>
+          </div>
+        </div>
       </div>
     </div>
   );

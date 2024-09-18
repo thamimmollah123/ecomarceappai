@@ -6,86 +6,73 @@ const SkinTone = ({ onSkinToneChange }) => {
     display: 'flex',
     flexDirection: 'column',
     alignItems: 'center',
-    marginTop: '70px'
+    marginTop: '50px',
   };
 
-  const buttonStyle = {
-    width: '95px',
-    padding: '10px',
-    fontSize: '13px',
+  const labelStyle = {
+    marginBottom: '20px',
+    fontSize: '18px',
     fontWeight: 'bold',
-    borderRadius: '25px',
-    border: 'none',
-    margin: '18px 9px',
-    color: 'white',
+    color: '#333', // Dark grey text for contrast
+    letterSpacing: '1px',
+  };
+
+  const sliderStyle = {
+    width: '180px',
+    margin: '2px 0',
     cursor: 'pointer',
-    transition: 'transform 0.2s, boxShadow 0.2s',
+    background: 'linear-gradient(90deg, rgb(255, 223, 186), rgb(255, 194, 149), rgb(222, 161, 121), rgb(180, 123, 87), rgb(144, 90, 57))', // Smooth RGB gradient
+    borderRadius: '10px',
+    height: '10px',
+    appearance: 'none',
+    outline: 'none',
   };
 
-  const hoverStyle = {
-    transform: 'scale(1.05)',
-    boxShadow: '0 5px 15px rgba(0, 0, 0, 0.2)'
+  const toneLabelStyle = {
+    fontSize: '9px',
+    fontWeight: '600',
+    color: '#444',
   };
 
-  // Specific styles for each tone
-  const fairToneStyle = {
-    backgroundColor: '#f1c40f',
-    border: '2px solid #f39c12'
+  const thumbStyle = {
+    height: '20px',
+    width: '20px',
+    backgroundColor: '#888', // Grey thumb
+    borderRadius: '50%',
+    position: 'relative',
+    appearance: 'none',
   };
 
-  const mediumToneStyle = {
-    backgroundColor: '#e67e22',
-    border: '2px solid #d35400'
+  const handleSliderChange = (event) => {
+    const value = event.target.value;
+    
+    // Apply RGB adjustments based on slider value
+    if (value <= 33) {
+      onSkinToneChange('brightness(1.2) saturate(1.3)'); // Fair Tone
+    } else if (value > 33 && value <= 66) {
+      onSkinToneChange(''); // Medium Tone
+    } else if (value > 66) {
+      onSkinToneChange('brightness(0.9) saturate(1.7)'); // Olive Tone
+    }
   };
-
-  const oliveToneStyle = {
-    backgroundColor: '#2ecc71',
-    border: '2px solid #27ae60'
-  };
-
-  // Handle hover effect on buttons
-  const [hoveredButton, setHoveredButton] = React.useState(null);
 
   return (
     <div style={containerStyle}>
-      <button
-        style={{ 
-          ...buttonStyle, 
-          ...fairToneStyle, 
-          ...(hoveredButton === 'fair' ? hoverStyle : {}) 
-        }}
-        onMouseEnter={() => setHoveredButton('fair')}
-        onMouseLeave={() => setHoveredButton(null)}
-        onClick={() => onSkinToneChange('brightness(1.2) saturate(1.3)')}
-      >
-        Fair Tone
-      </button><br />
-
-      <button
-        style={{ 
-          ...buttonStyle, 
-          ...mediumToneStyle, 
-          ...(hoveredButton === 'medium' ? hoverStyle : {}) 
-        }}
-        onMouseEnter={() => setHoveredButton('medium')}
-        onMouseLeave={() => setHoveredButton(null)}
-        onClick={() => onSkinToneChange('')}
-      >
-        Medium Tone
-      </button><br />
-
-      <button
-        style={{ 
-          ...buttonStyle, 
-          ...oliveToneStyle, 
-          ...(hoveredButton === 'olive' ? hoverStyle : {}) 
-        }}
-        onMouseEnter={() => setHoveredButton('olive')}
-        onMouseLeave={() => setHoveredButton(null)}
-        onClick={() => onSkinToneChange('brightness(0.9) saturate(1.7)')}
-      >
-        Olive Tone
-      </button>
+      <label style={labelStyle}>Adjust Skin Tone</label>
+      <input
+        type="range"
+        min="0"
+        max="100"
+        step="1"
+        defaultValue="50"
+        onChange={handleSliderChange}
+        style={sliderStyle}
+      />
+      <div>
+        <span style={toneLabelStyle}>Fair</span>
+        <span style={{ ...toneLabelStyle, margin: '0 30px' }}>Medium</span>
+        <span style={toneLabelStyle}>Olive</span>
+      </div>
     </div>
   );
 };
