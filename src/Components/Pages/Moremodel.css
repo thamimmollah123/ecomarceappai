@@ -1,0 +1,116 @@
+.container {
+    display: flex;
+    max-width: 100%;
+    background-color: #f5dad8; /* Light pink background */
+    min-height: 100vh; /* Ensures it covers the full view height */
+    
+  }
+  
+  .sidebar {
+    width: 200px;
+    background-color: #d3f7f3; /* Light teal background */
+    padding: 10px;
+    display: flex;
+    flex-direction: column;
+  }
+  
+  .category {
+    margin: 25px 0;
+    padding: 20px;
+    text-align: center;
+    cursor: pointer;
+   
+    transition: background-color 0.3s ease; /* Smooth transition */
+    border: 1px solid transparent; /* Transparent border by default */
+    border-radius: 8px; /* Rounded corners */
+  }
+  
+  .category:hover {
+    background-color: rgba(205, 228, 226, 0.5); /* Background color with transparency */
+  }
+  
+ 
+  
+ 
+  
+  .items {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr); /* Two columns */
+    grid-template-rows: repeat(2, auto); /* Two rows */
+    gap: 20px;
+    padding: 20px;
+    align-content: start;
+ 
+
+  }
+  
+  .item {
+    background-color: #fff; /* White background for the card */
+    border: 1px solid #ddd; /* Light border for the card */
+    border-radius: 8px; /* Rounded corners */
+    box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for card effect */
+    overflow: hidden; /* Ensures content stays within the card */
+    transition: transform 0.3s ease, box-shadow 0.3s ease; /* Smooth transition */
+    display: flex;
+    flex-direction: column;
+    height: 280px; /* Fixed height for cards */
+    margin-top:30px;
+    cursor: pointer;
+   
+  }
+  
+  .item:hover {
+    transform: scale(1.02); /* Slightly enlarges the card on hover */
+    box-shadow: 0 6px 12px rgba(0, 0, 0, 0.2); /* Enhanced shadow on hover */
+  }
+  
+  .item img {
+    width: 100%;
+    height: 70%; /* Adjusted height to fit within the card */
+    object-fit: cover; /* Ensures image covers the area without distortion */
+
+  }
+  
+  .item-description {
+    padding: 10px;
+    text-align: center;
+    font-size: 14px; /* Adjust font size as needed */
+  }
+  
+  /* Specific styling for positioning items in grid */
+  .item:nth-child(1) {
+    grid-column: 1 / span 1; /* First card in the first column */
+  }
+  
+  .item:nth-child(2) {
+    grid-column: 2 / span 1; /* Second card in the second column */
+  }
+  
+  .item:nth-child(3) {
+    grid-column: 1 / span 1; /* Third card below the first card */
+    grid-row: 2 / span 1; /* Positioned in the second row */
+  }
+  
+  .item:nth-child(4) {
+    grid-column: 2 / span 1; /* Fourth card below the second card */
+    grid-row: 2 / span 1; /* Positioned in the second row */
+  }
+  /* Styling for the additional image */
+.additional-image {
+    width: 100px; /* Adjust the width as needed */
+    margin-left: 150px; /* Space between the items section and the image */
+  }
+  
+  .additional-image img {
+    width: 220%;
+    height: auto;
+    border-radius: 6px; /* Rounded corners */
+  }
+
+  /* Existing styles */
+
+.category i {
+    font-size: 3rem; /* Adjust size of icons */
+    margin-right: -10px; /* Space between icon and text */
+    color: red; /* Red color for icons */
+  }

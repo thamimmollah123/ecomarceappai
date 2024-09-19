@@ -9,6 +9,7 @@ import BabyGirl from './Components/Pages/BabyGirl';
 import Healthy from './Components/Pages/Healthy';
 import ShortSkirt from './Components/Pages/ShortSkirt';
 import WebcamCapture from './Components/Pages/WebcamCapture';
+import { Moremodel } from './Components/Pages/Moremodel';
 
 const PageRoute = () => {
   return (
@@ -24,6 +25,7 @@ const PageRoute = () => {
             <Route path="/healty" element={<Healthy />} />
             <Route path="/ShortSkirt" element={<ShortSkirt />} />
             <Route path="/webcam" element={<WebcamCapture />} />
+            <Route path="/moremodel" element={<Moremodel />} />
         
           </Routes>
         </Router>

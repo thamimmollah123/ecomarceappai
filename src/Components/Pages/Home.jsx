@@ -7,6 +7,9 @@ import blackkurti from '../Assets/black.png';
 import Nav from './Nav';
 import WebcamCapture from './WebcamCapture';
 import SkinTone from '../Pages/SkinTone'; // Import the SkinTone component
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { Link } from 'react-router-dom';
+
 
 const Home = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
@@ -19,13 +22,13 @@ const Home = () => {
     xPosFactor: 0.269,
     yPosFactor: 0.21,
   });
-  // Dynamic content for text with explicit <br/> tags
   const [textContent, setTextContent] = useState({
     title: "VIRTUAL DRESSING ROOM",
     heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
     description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
   });
   const outputCanvasRef = useRef(null);
+  const navigate = useNavigate(); // Initialize navigation hook
 
   // Handle webcam image capture
   const handleCapture = (capturedImageSrc) => {
@@ -102,6 +105,11 @@ const Home = () => {
     updateCanvas(selectedKurti, widthFactor, heightFactor, xPosFactor, yPosFactor);
   };
 
+  // Handle click on 'More Collection'
+  const handleMoreCollectionClick = () => {
+    navigate('/moremodel'); // Navigate to the moremodel page
+  };
+
   return (
     <>
       <Nav />
@@ -130,18 +138,22 @@ const Home = () => {
           <SkinTone onSkinToneChange={handleSkinToneChange} />
 
           <div className="product-card">
-            <div className="product-image-container">
-              <img
-                src={finalImageSrc}
-                alt="Human Figure"
-                className="product-image"
-              />
-              <canvas ref={outputCanvasRef} style={{ display: 'none' }}></canvas>
-            </div>
-          </div>
+  <div className="product-image-container">
+    <img
+      src={finalImageSrc}
+      alt="Human Figure"
+      className="product-image"
+    />
+    <canvas ref={outputCanvasRef} style={{ display: 'none' }}></canvas>
+    <Link to="/moremodel" className="more-collection-overlay">
+      More collection
+    </Link>
+  </div>
+</div>
+
         </div>
-         
-         {/* Text container with dynamic content and line breaks */}
+
+        {/* Text container with dynamic content and line breaks */}
         <div className="text-container">
           <p className="title">{textContent.title}</p>
           <h1 className="paragraph" dangerouslySetInnerHTML={{ __html: textContent.heading }}></h1>
