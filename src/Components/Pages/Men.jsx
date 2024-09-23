@@ -7,6 +7,8 @@ import Shorts1 from '../Assets/Shorts1.png';
 import Nav from './Nav';
 import WebcamCapture from './WebcamCapture';
 import SkinTone from './SkinTone'; // Import the SkinTone component
+import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+
 
 const Men = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
@@ -22,6 +24,7 @@ const Men = () => {
     heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
     description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
   });
+  const navigate = useNavigate();
 
   // Handle captured face image
   const handleCapture = (capturedImageSrc) => {
@@ -136,6 +139,9 @@ const Men = () => {
   return (
     <>
       <Nav />
+      <button className="back-button" onClick={() => navigate('/')}>
+  &#8592; Back {/* Using a simple HTML arrow symbol instead of an icon */}
+</button>
       <div className="home">
         <div className='container-home'>
           {/* Webcam Capture Component */}

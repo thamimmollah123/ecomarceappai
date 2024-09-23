@@ -9,7 +9,7 @@ import WebcamCapture from './WebcamCapture';
 import SkinTone from '../Pages/SkinTone'; // Import the SkinTone component
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
 import { Link } from 'react-router-dom';
-
+import { FaArrowLeft } from 'react-icons/fa';
 
 const Home = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
@@ -113,6 +113,9 @@ const Home = () => {
   return (
     <>
       <Nav />
+      <button className="back-button" onClick={() => navigate('/')}>
+  &#8592; Back {/* Using a simple HTML arrow symbol instead of an icon */}
+</button>
 
       <div className="home">
         <div className='container-home'>

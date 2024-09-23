@@ -4,7 +4,7 @@ import '@fortawesome/fontawesome-free/css/all.min.css'; // Import Font Awesome C
 
 export const Moremodel = () => {
   const [categories, setCategories] = useState([
-    { id: 1, name: 'Tops', icon: 'fas fa-tshirt', isActive: true },
+    { id: 1, name: '', icon: 'fas fa-tshirt', isActive: true },
     { id: 2, name: 'Dresses', icon: 'fas fa-skirt', isActive: false }, // Using fa-skirt for dresses
     { id: 3, name: 'Bottoms', icon: 'fas fa-trousers', isActive: false } // Ensure fa-trousers is available or use an alternative
   ]);

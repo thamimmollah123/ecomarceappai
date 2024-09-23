@@ -205,3 +205,26 @@
   text-decoration: none; /* Optional: underline on hover */
 }
 
+.back-button {
+  position: fixed; /* or absolute, depending on your layout */
+  top: 10px;
+  left: 25px;
+  padding: 10px 15px;
+  background-color: #f1f1f1;
+  border: none;
+  border-radius: 5px;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+  display: flex;
+  align-items: center;
+  font-size: 16px;
+  color: #333;
+}
+
+.back-button:hover {
+  background-color: #ddd;
+}
+
+.back-button svg {
+  margin-right: 5px; /* Adds a small space between the icon and text */
+}
