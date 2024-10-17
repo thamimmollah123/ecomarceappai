@@ -6,6 +6,8 @@ import BlueGaun from '../Assets/BlueGaun.png';
 import prusian from '../Assets/prusian.png';
 import Nav from './Nav';
 import WebcamCapture from './WebcamCapture'; // Import WebcamCapture component
+import swapped from '../Assets/swapped_face.png';
+import axios from 'axios';
 
 const ShortSkirt = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
@@ -14,8 +16,33 @@ const ShortSkirt = () => {
   const outputCanvasRef = useRef(null);
 
   // Handle webcam image capture
-  const handleCapture = (capturedImageSrc) => {
-    setCapturedImageSrc(capturedImageSrc); 
+  // Handle captured face image
+  const handleCapture = async (capturedImageSrc) => {
+    console.log('capturedImageSrc', capturedImageSrc);
+    
+    const formData = new FormData();
+    formData.append('source', capturedImageSrc);
+  
+    // Set 'target' to 'male' to specify that you want to swap with the 'male' image
+    formData.append('target', 'short');
+  
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/face_swap', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log("response", response);
+      console.log('swapped successfully complete');
+  
+      // Set the final image source to the imported swapped image if the request is successful
+      if (response.status === 200) {
+        setFinalImageSrc(swapped);
+      }
+    } catch (error) {
+      console.error('Failed to send image to the API:', error);
+    }
   };
 
   useEffect(() => {

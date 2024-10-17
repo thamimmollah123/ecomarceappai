@@ -1,19 +1,25 @@
 import React, { useState, useRef, useEffect } from 'react';
 import '../Pages/Home.css';
-import humanBaseImage from '../Assets/male-beauty.png';
+import humanBaseImage from '../Assets/male-beauty-dress.png';
 import sweater from '../Assets/sweater.png';
 import Suit from '../Assets/Suit.png';
 import Shorts1 from '../Assets/Shorts1.png';
 import Nav from './Nav';
 import WebcamCapture from './WebcamCapture';
+import axios from 'axios';
 import SkinTone from './SkinTone'; // Import the SkinTone component
 import { useNavigate } from 'react-router-dom'; // Import useNavigate for navigation
+import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
+import { faSun, faMoon } from '@fortawesome/free-solid-svg-icons'; // Import iconsssssssss
+import swapped from '../Assets/swapped_face.png';
 
 
 const Men = () => {
   const [finalImageSrc, setFinalImageSrc] = useState(humanBaseImage);
   const [selectedClothing, setSelectedClothing] = useState(null);
   const [capturedImageSrc, setCapturedImageSrc] = useState(null);
+  const [isDayMode, setIsDayMode] = useState(true);
+  const [isNightMode, setIsNightMode] = useState(false);
   const [isShortsVisible, setIsShortsVisible] = useState(true);
   const [skinToneFilter, setSkinToneFilter] = useState(''); // Skin tone filter
   const outputCanvasRef = useRef(null);
@@ -24,12 +30,40 @@ const Men = () => {
     heading: "One-size-fits-all <br/> doesn’t work for <br/> fashion. Or eCommerce <br/> models",
     description: "Virtual Dressing Room solves one of the biggest hassle in<br/> online fashion shopping. Help your shoppers view <br/> products on models that are most similar to them."
   });
+
+
+  
   const navigate = useNavigate();
 
   // Handle captured face image
-  const handleCapture = (capturedImageSrc) => {
-    setCapturedImageSrc(capturedImageSrc);
+  const handleCapture = async (capturedImageSrc) => {
+    console.log('capturedImageSrc', capturedImageSrc);
+    
+    const formData = new FormData();
+    formData.append('source', capturedImageSrc);
+  
+    // Set 'target' to 'male' to specify that you want to swap with the 'male' image
+    formData.append('target', 'male');
+  
+    try {
+      const response = await axios.post('http://127.0.0.1:5000/face_swap', formData, {
+        headers: {
+          'Content-Type': 'multipart/form-data',
+        },
+      });
+  
+      console.log("response", response);
+      console.log('swapped successfully complete');
+  
+      // Set the final image source to the imported swapped image if the request is successful
+      if (response.status === 200) {
+        setFinalImageSrc(swapped);
+      }
+    } catch (error) {
+      console.error('Failed to send image to the API:', error);
+    }
   };
+  
 
   // Draw base image, Shorts1 (conditionally), and any selected clothing
   const drawClothingOnCanvas = (clothingImageSrc = null, widthFactor, heightFactor, xPosFactor, yPosFactor) => {
@@ -135,20 +169,37 @@ const Men = () => {
     setSkinToneFilter(filter);
     drawClothingOnCanvas(selectedClothing);
   };
+  const toggleTheme = () => {
+    setIsDayMode(prevMode => !prevMode);
+  };
+
+  const toggleNightMode = () => {
+    setIsNightMode((prevMode) => !prevMode);
+  };
 
   return (
-    <>
-      <Nav />
+    <div className={isDayMode ? 'day-mode' : 'night-mode'}>
+       <Nav isNightMode={!isDayMode} />
+      
+      {/* Back Button */}
       <button className="back-button" onClick={() => navigate('/')}>
-  &#8592; Back {/* Using a simple HTML arrow symbol instead of an icon */}
-</button>
+        &#8592; Back {/* Using simple HTML arrow symbol instead of an icon */}
+      </button>
+
+      {/* Toggle Theme Button */}
+      <button className="toggle-theme-button" onClick={toggleTheme}>
+        <FontAwesomeIcon className="theme-icon" icon={isDayMode ? faMoon : faSun} />
+      </button>
+
       <div className="home">
         <div className='container-home'>
+          
           {/* Webcam Capture Component */}
           <div className="webcam-container" style={{ float: 'left', marginRight: '20px' }}>
             <WebcamCapture onCapture={handleCapture} />
           </div>
 
+          {/* Jersey Selection */}
           <div className="jersey-selection">
             {/* Sweater */}
             <button
@@ -176,26 +227,31 @@ const Men = () => {
             <br />
           </div>
 
-          {/* Skin tone selection */}
-          <SkinTone onSkinToneChange={handleSkinToneChange} />
+          {/* Skin Tone Selection */}
+          {/* <SkinTone onSkinToneChange={handleSkinToneChange} /> */}
 
           {/* Final Output */}
           <div className="product-card">
             <div className="product-image-container">
-              <img src={finalImageSrc} alt="Human Figure" className="product-image" />
+            {finalImageSrc && (
+                <img src={finalImageSrc} alt="Human Figure" className="product-image" />
+              )}
               <canvas ref={outputCanvasRef} style={{ display: 'none' }} />
             </div>
           </div>
         </div>
-
-        {/* Text container with dynamic content and line breaks */}
+           {/* SkinTone component for adjusting skin tone */}
+           {/* <div className='skin-tone'>
+          <SkinTone onSkinToneChange={handleSkinToneChange} />
+          </div> */}
+        {/* Text Content */}
         <div className="text-container">
           <p className="title">{textContent.title}</p>
           <h1 className="paragraph" dangerouslySetInnerHTML={{ __html: textContent.heading }}></h1>
           <p className="paragraph-virtual" dangerouslySetInnerHTML={{ __html: textContent.description }}></p>
         </div>
       </div>
-    </>
+    </div>
   );
 };
 

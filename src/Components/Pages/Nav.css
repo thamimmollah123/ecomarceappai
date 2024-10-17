@@ -100,3 +100,38 @@
     margin-bottom: -26px;
     font-size: 7px;
 }
+
+/* Nav.css */
+
+/* Day mode styles */
+.navbar.day-mode {
+    background-color: #ffffff;
+    color: #000000;
+}
+
+/* Night mode styles */
+.navbar.night-mode {
+    background-color: #000000;
+    color: #ffffff;
+}
+
+/* Example styling for the dropdown menu */
+.nav-links .dropdown-menu {
+    background-color: #fff;
+    color: #000;
+}
+
+.navbar.night-mode .dropdown-menu {
+    background-color: black;
+    color: #fff;
+}
+
+/* Button styles */
+.request-demo {
+    background-color: black;
+    color: white;
+}
+
+.navbar.night-mode .request-demo {
+    background-color: grey;
+}

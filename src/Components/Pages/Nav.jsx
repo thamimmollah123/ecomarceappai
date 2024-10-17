@@ -3,7 +3,7 @@ import './Nav.css';
 import WebcamCapture from './WebcamCapture'; // Import the WebcamCapture component
 import Modal from './Modal'; // Import the Modal component
 
-const Nav = () => {
+const Nav = ({ isNightMode }) => {
     const [activeDropdown, setActiveDropdown] = useState(null);
     const [showCamera, setShowCamera] = useState(false); // State to control the modal visibility
 
@@ -42,7 +42,7 @@ const Nav = () => {
     ];
 
     return (
-        <nav className="navbar">
+        <nav className={`navbar ${isNightMode ? 'night-mode' : 'day-mode'}`}>
             <ul className="nav-links">
                 {menuItems.map((item, index) => (
                     <li key={index} className="nav-item">

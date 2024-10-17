@@ -1,31 +1,104 @@
+/* Base Styles */
+body {
+  margin: 0;
+  font-family: 'Inter', sans-serif; /* Ensure you include this font in your project */
+}
+
+/* Day Mode Styles */
+.day-mode {
+  background-color: white; /* White background */
+  color: #000; /* Black text */
+}
+
+.day-mode .home {
+  background-color: white; /* White background */
+}
+
+.day-mode .container-home {
+  background-color: #e4dfe3; /* Light background for container */
+}
+
+.day-mode .product-card {
+  background-color: rgb(249, 249, 248); /* Light background for product cards */
+  border: 1px solid #cccccc; /* Light border for product card */
+}
+
+.day-mode .toggle-image {
+  background-color: #fff; /* White background for toggle images */
+}
+
+.day-mode .jersey-btn.selected {
+  border-color: red; /* Selected jersey border color */
+}
+
+.day-mode .more-collection-overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Overlay for product image */
+}
+
+/* Night Mode Styles */
+.night-mode {
+  background-color: #121212; /* Dark background */
+  color: #fff; /* White text */
+}
+
+.night-mode .home {
+  background-color: #121212; /* Dark background */
+}
+
+.night-mode .home {
+  background-color: #121212; /* Dark background */
+}
+
+.night-mode .container-home {
+  background-color: #1e1e1e; /* Dark background for container */
+}
+
+.night-mode .product-card {
+  background-color: #1e1e1e; /* Dark background for product cards */
+  border: 1px solid #444; /* Darker border for product card */
+}
+
+.night-mode .toggle-image {
+  background-color: #333; /* Dark grey background for toggle images */
+}
+
+.night-mode .jersey-btn.selected {
+  border-color: red; /* Selected jersey border color */
+}
+
+.night-mode .more-collection-overlay {
+  background-color: rgba(0, 0, 0, 0.5); /* Semi-transparent black background */
+}
+
+
+
+/* Common Styles */
 .home {
   display: flex;
   align-items: center;
-  height: 80vh;
-  background-color: white;
-  margin-left: 40rem;  /* This might need adjustment or be handled differently for better responsiveness */
+  height: 91vh;
+  margin-left: 50rem; /* Adjust for responsiveness as needed */
 }
 
 .container-home {
-  background-color: #e4dfe3;
-  padding: 15px; /* Optional: Adds padding around the container */
-  padding-left: 25px;
-  border-radius: 7px; /* Optional: Rounds corners of the container */
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Optional: Adds shadow to the container */
+  padding: 15px; /* Padding around the container */
+  padding-left: 50px;
+  border-radius: 7px; /* Rounds corners of the container */
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for the container */
   display: flex;
+  margin-bottom: 8rem;
 }
 
 .product-card {
   display: flex;
   flex-direction: row;
   align-items: center;
-  background-color: rgb(249,249,248);
   padding: 20px;
   border-radius: 10px;
-  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1);
+  box-shadow: 0 4px 8px rgba(0, 0, 0, 0.1); /* Shadow for the product card */
   width: 90%;
-  max-width: 250px;
-  border-radius: 10px;
+
+  max-width: 250px; /* Max width for the product card */
 }
 
 .product-image-container {
@@ -34,7 +107,7 @@
 }
 
 .product-image {
-  width: 100%;  /* Ensures the image scales responsively within the container */
+  width: 100%; /* Responsive image */
 }
 
 .jersey-selection {
@@ -49,7 +122,7 @@
 
 .jersey-selection::-webkit-scrollbar {
   width: 0px; /* Remove scrollbar for WebKit browsers */
-  background: transparent; /* Optional: make background transparent */
+  background: transparent; /* Make background transparent */
 }
 
 .jersey-btn {
@@ -58,15 +131,14 @@
   padding: 5px;
   cursor: pointer;
   transition: border-color 0.3s, box-shadow 0.3s;
-  background-color: white;
+  background-color: white; /* White background for jersey buttons */
   border-radius: 5px;
   outline: none; /* Remove default focus outline */
 }
 
 .jersey-btn.selected {
-  border-color: red;
   position: relative;
-  background-color: #f8f8f8;
+  background-color: #f8f8f8; /* Background for selected button */
 }
 
 .jersey-btn.selected:focus {
@@ -84,7 +156,7 @@
   right: 40px;
   width: 15px;
   height: 15px;
-  background-color: pink;
+  background-color: pink; /* Indicator color for selected jersey */
   border-radius: 50%;
   transform: translate(50%, -50%);
 }
@@ -97,134 +169,216 @@
 
 .text-container {
   margin-left: -85rem;
+  margin-bottom: 10rem;
 }
 
 .text-container .paragraph {
-  font-size: 40px;
+  font-size: 50px; /* Title font size */
 }
 
 .text-container .paragraph-virtual {
-  font-size: 17px;
+  font-size: 21px; /* Description font size */
 }
 
-/* Responsive adjustments */
-@media (max-width: 768px) {
-  .home {
-    margin-left: 0;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  .product-card {
-    flex-direction: column;
-    width: 100%;
-    max-width: none;
-  }
-
-  .text-container {
-    margin-left: 0;
-    text-align: center;
-  }
-
-  .text-container .paragraph {
-    font-size: 32px;
-  }
-
-  .text-container .paragraph-virtual {
-    font-size: 14px;
-  }
-}
-
-@media (max-width: 480px) {
-  .product-card {
-    padding: 10px;
-  }
-
-  .jersey-selection {
-    margin-right: 0;
-  }
-
-  .toggle-image {
-    width: 50px;
-  }
-
-  .text-container .paragraph {
-    font-size: 24px;
-  }
-
-  .text-container .paragraph-virtual {
-    font-size: 12px;
-  }
-}
-
-/* Container for the image and overlay */
-.product-image-container {
-  position: relative;
-  text-align: center;
-}
-
-.product-image {
-  width: 100%;  /* Ensures the image scales responsively within the container */
-}
-
+/* Overlay Styles */
 .more-collection-overlay {
   position: absolute;
   top: 50%;
-  left: 50%;
+  left: 87%;
+  text-decoration: none;
   transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
-  color: white;
-  padding: 10px;
+  color: white; /* Text color for overlay */
+  padding: 6px;
   border-radius: 5px;
   visibility: hidden; /* Hidden by default */
   opacity: 0; /* Hidden by default */
   transition: visibility 0.3s, opacity 0.3s; /* Smooth transition */
+  font-size: 12px;
 }
 
 .product-image-container:hover .more-collection-overlay {
   visibility: visible; /* Show on hover */
   opacity: 1; /* Show on hover */
 }
-.more-collection-overlay {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  background-color: rgba(0, 0, 0, 0.5); /* Transparent background */
-  color: white;
-  padding: 10px;
-  border-radius: 5px;
-  visibility: hidden; /* Hidden by default */
-  opacity: 0; /* Hidden by default */
-  transition: visibility 0.3s, opacity 0.3s; /* Smooth transition */
-  text-decoration: none; /* Remove underline */
-  font-size: 11px; /* Adjust font size if needed */
-}
 
-.more-collection-overlay:hover {
-  text-decoration: none; /* Optional: underline on hover */
-}
-
+/* Back Button Styles */
 .back-button {
   position: fixed; /* or absolute, depending on your layout */
   top: 10px;
   left: 25px;
   padding: 10px 15px;
-  background-color: #f1f1f1;
+  background-color: #f1f1f1; /* Light background for back button */
   border: none;
   border-radius: 5px;
   cursor: pointer;
-  transition: background-color 0.3s ease;
+  transition: background-color 0.3s ease; /* Smooth transition for hover */
   display: flex;
   align-items: center;
-  font-size: 16px;
-  color: #333;
+  font-size: 16px; /* Font size for back button */
+  color: #333; /* Text color */
 }
 
 .back-button:hover {
-  background-color: #ddd;
+  background-color: #ddd; /* Background color on hover */
 }
 
 .back-button svg {
-  margin-right: 5px; /* Adds a small space between the icon and text */
+  margin-right: 5px; /* Adds space between the icon and text */
+}
+.toggle-theme-button {
+  background-color: transparent;
+  border: none;
+  cursor: pointer;
+  font-size: 20px;
+  color: #f39c12;
+  transition: color 0.3s ease;
+  margin-left: 100rem;
+  /* Ensure button's position can be controlled */
+  padding: 0;
+  height: 80px; /* Adjust height for the button container */
+  width: 80px; /* Adjust width for the button container */
+}
+
+.theme-icon {
+  font-size: 21px; /* Adjust the size of the icon */
+  position: absolute;
+  top: 0; /* Position the icon at the top of the button */
+  right: 21%;
+  transform: translateX(-50%); /* Center horizontally */
+  margin-top: 14.3px;
+}
+
+
+
+.toggle-theme-button:hover {
+  color: #3498db; /* Change color on hover (e.g., blue) */
+}
+
+.toggle-theme-button:focus {
+  outline: none;
+}
+
+ /* RESPONSIVE FOR UI */
+ /* Mobile (max-width: 767px) */
+@media only screen and (max-width: 767px) {
+  body {
+    font-size: 14px; /* Adjust font size for better readability */
+  }
+
+  .home {
+    margin-left: 0;
+    height: auto; /* Ensure full height isn't forced on smaller screens */
+    flex-direction: column; /* Stack elements vertically */
+  }
+
+  .container-home {
+    padding: 10px; /* Reduce padding for smaller screens */
+    padding-left: 10px;
+    margin-bottom: 5rem;
+    width: 100%; /* Ensure the container takes full width */
+    border-radius: 5px;
+  }
+
+  .product-card {
+    flex-direction: column; /* Stack content vertically */
+    max-width: 100%;
+    width: 100%; /* Full width on mobile */
+    padding: 10px; /* Adjust padding */
+  }
+
+  .jersey-selection {
+    flex-direction: row; /* Change to horizontal scrolling */
+    max-height: unset; /* Remove max height */
+    overflow-x: scroll; /* Enable horizontal scroll */
+    overflow-y: hidden; /* Disable vertical scroll */
+  }
+
+  .jersey-btn {
+    margin: 5px; /* Adjust spacing for buttons */
+    padding: 5px;
+  }
+
+  .text-container {
+    margin-left: 0;
+    margin-bottom: 2rem;
+    font-size: 16px; /* Smaller font sizes */
+  }
+
+  .text-container .paragraph {
+    font-size: 24px; /* Adjust title font size */
+  }
+
+  .text-container .paragraph-virtual {
+    font-size: 14px; /* Adjust description font size */
+  }
+
+  .toggle-theme-button {
+    margin-left: 0;
+    height: 50px;
+    width: 50px;
+  }
+
+  .theme-icon {
+    font-size: 16px;
+  }
+}
+
+/* Tablets (min-width: 768px and max-width: 1024px) */
+@media only screen and (min-width: 768px) and (max-width: 1024px) {
+  body {
+    font-size: 16px; /* Slightly larger font for tablets */
+  }
+
+  .home {
+    margin-left: 0;
+    flex-direction: column;
+    height: auto;
+  }
+
+  .container-home {
+    padding: 20px; /* Keep some padding but reduce */
+    margin-bottom: 6rem;
+    width: 100%; /* Full width for tablet */
+  }
+
+  .product-card {
+    flex-direction: row;
+    max-width: 100%;
+    width: 100%;
+    padding: 15px; /* Adjust padding */
+  }
+
+  .jersey-selection {
+    max-height: 300px; /* Adjust max height for tablets */
+    overflow-y: auto; /* Keep vertical scroll for tablets */
+  }
+
+  .jersey-btn {
+    margin: 7px; /* Adjust spacing for tablet */
+    padding: 6px;
+  }
+
+  .text-container {
+    margin-left: 0;
+    margin-bottom: 4rem;
+    font-size: 18px;
+  }
+
+  .text-container .paragraph {
+    font-size: 36px; /* Larger title font */
+  }
+
+  .text-container .paragraph-virtual {
+    font-size: 18px;
+  }
+
+  .toggle-theme-button {
+    margin-left: 0;
+    height: 60px;
+    width: 60px;
+  }
+
+  .theme-icon {
+    font-size: 18px;
+  }
 }

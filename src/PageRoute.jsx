@@ -1,5 +1,6 @@
 import React from 'react';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useTheme } from './ThemeContext'; // Import the useTheme hook
 import Home from './Components/Pages/Home';
 import About from './Components/Pages/About';
 import Dressing from './Components/Pages/Dressing';
@@ -12,25 +13,28 @@ import WebcamCapture from './Components/Pages/WebcamCapture';
 import { Moremodel } from './Components/Pages/Moremodel';
 
 const PageRoute = () => {
+  const { isDayMode, toggleTheme } = useTheme();
+
   return (
-   
-        <Router>
-          <Routes>
-          <Route path="/" element={<Dressing />} />
-            <Route path="/virtual" element={<Home />} />
-            <Route path="/about" element={<About />} />
-            <Route path="/navi" element={<NavigationDress/>} />
-            <Route path="/men" element={<Men />} />
-            <Route path="/baby" element={<BabyGirl />} />
-            <Route path="/healty" element={<Healthy />} />
-            <Route path="/ShortSkirt" element={<ShortSkirt />} />
-            <Route path="/webcam" element={<WebcamCapture />} />
-            <Route path="/moremodel" element={<Moremodel />} />
+    <Router>
+      <div className={isDayMode ? 'day-mode' : 'night-mode'}>
         
-          </Routes>
-        </Router>
-      );
-  
-}
+        <Routes>
+          <Route path="/" element={<Dressing />} />
+          <Route path="/virtual" element={<Home />} />
+          <Route path="/about" element={<About />} />
+          <Route path="/navi" element={<NavigationDress />} />
+          <Route path="/men" element={<Men />} />
+          <Route path="/baby" element={<BabyGirl />} />
+          <Route path="/healthy" element={<Healthy />} />
+          <Route path="/ShortSkirt" element={<ShortSkirt />} />
+          <Route path="/webcam" element={<WebcamCapture />} />
+          <Route path="/moremodel" element={<Moremodel />} />
+        </Routes>
+      </div>
+    </Router>
+  );
+};
+
 
 export default PageRoute;

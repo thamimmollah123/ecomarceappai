@@ -36,3 +36,14 @@
     transform: rotate(360deg);
   }
 }
+.day-mode {
+  background-color: white; /* Day mode background */
+  color: black; /* Day mode text color */
+}
+
+.night-mode {
+  background-color: #333; /* Night mode background */
+  color: white; /* Night mode text color */
+}
+
+/* You can also add more styles for specific elements as needed */

@@ -1,0 +1,48 @@
+.footer {
+    padding: 22px; /* Increased padding for a spacious feel */
+    text-align: center;
+    font-family: 'Arial', sans-serif; /* Consistent font style */
+    position: relative;
+    border-top: 1px solid #eaeaea; /* Subtle top border */
+    margin-top: -50px; /* Space between footer and content above */
+    
+}
+
+.footer.day-mode {
+    background-color: #f9f9f9; /* Light background */
+    color: #333; /* Dark text */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+/* Night mode footer styles */
+.footer.night-mode {
+    background-color: #333; /* Dark background */
+    color: #f9f9f9; /* Light text */
+    transition: background-color 0.3s, color 0.3s;
+}
+
+.footer p {
+    margin: 10px 0; /* Spacing around the text */
+    font-size: 10px; /* Consistent font size */
+}
+
+.footer a {
+    color: #007bff; /* Link color */
+    text-decoration: none; /* Remove underline */
+    transition: color 0.3s; /* Smooth color transition */
+}
+
+.footer a:hover {
+    color: #0056b3; /* Darker link color on hover */
+}
+
+/* Responsive design */
+@media (max-width: 600px) {
+    .footer {
+        padding: 20px; /* Adjust padding for smaller screens */
+    }
+    
+    .footer p {
+        font-size: 14px; /* Slightly smaller font size */
+    }
+}

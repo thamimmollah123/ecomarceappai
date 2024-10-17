@@ -28,40 +28,69 @@ const WebcamCapture = ({ onCapture }) => {
         setIsLoading(false);
       }
     };
-
     const detectFaces = async (model) => {
       const video = videoRef.current;
-
+    
       const detect = async () => {
         if (video.readyState === 4) {
+          // Detect faces in the video stream
           const predictions = await model.estimateFaces(video, false);
-
+    
           const canvas = canvasRef.current;
-          if (!canvas) return;
+    
+          // Ensure canvasRef.current is not null before using it
+          if (!canvas) {
+            console.error("Canvas element not available yet");
+            return;
+          }
+    
           const ctx = canvas.getContext('2d');
-          if (!ctx) return;
-
-          ctx.clearRect(0, 0, canvas.width, canvas.height);
-
+    
+          // Ensure the context is available
+          if (!ctx) {
+            console.error("Could not get 2D context from canvas");
+            return;
+          }
+    
           canvas.width = video.videoWidth;
           canvas.height = video.videoHeight;
-
+          ctx.clearRect(0, 0, canvas.width, canvas.height);
+    
           if (predictions.length > 0) {
-            const prediction = predictions[0];
-            const [x, y, width, height] = prediction.topLeft.concat(prediction.bottomRight).flat();
-            ctx.strokeStyle = 'yellow';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(x, y, width - x, height - y);
-
-            setFaceBoundingBox({ x, y, width: width - x, height: height - y });
+            predictions.forEach((prediction) => {
+              const [x, y] = prediction.topLeft;
+              const [rightX, rightY] = prediction.bottomRight;
+              const width = rightX - x;
+              const height = rightY - y;
+    
+              // Draw the face bounding box on the canvas for each prediction
+              ctx.strokeStyle = 'yellow';
+              ctx.lineWidth = 4;
+              ctx.strokeRect(x, y, width, height);
+    
+              // Update the face bounding box state (could store multiple if needed)
+              setFaceBoundingBox({ x, y, width, height });
+            });
+          } else {
+            console.log("No faces detected");
           }
         }
-
+    
         requestAnimationFrame(detect);
       };
-
+    
       detect();
     };
+    
+    
+
+    if (isCameraOn) {
+      loadModelAndDetectFaces();
+    } else {
+      if (videoRef.current && videoRef.current.srcObject) {
+        videoRef.current.srcObject.getTracks().forEach((track) => track.stop());
+      }
+    }
 
     if (isCameraOn) {
       loadModelAndDetectFaces();
@@ -83,9 +112,8 @@ const WebcamCapture = ({ onCapture }) => {
 
     const video = videoRef.current;
     const canvas = document.createElement('canvas');
-    const scaleFactor = 0.5; 
-    canvas.width = faceBoundingBox.width * scaleFactor;
-    canvas.height = faceBoundingBox.height * scaleFactor;
+    canvas.width = faceBoundingBox.width;
+    canvas.height = faceBoundingBox.height;
 
     const ctx = canvas.getContext('2d');
     if (!ctx) return;
@@ -98,80 +126,45 @@ const WebcamCapture = ({ onCapture }) => {
       canvas.width, canvas.height
     );
 
+    // Convert the canvas content to a downloadable image
     const imageSrc = canvas.toDataURL('image/png');
-    onCapture(imageSrc);
+
+    // Create an anchor element to download the image
+    const link = document.createElement('a');
+    link.href = imageSrc;
+    link.download = 'captured-face-image.png';  // Set the file name
+    document.body.appendChild(link);  // Append the link to the document
+    link.click();  // Programmatically click the link to download the image
+    document.body.removeChild(link);  // Clean up the link element
+
+    onCapture(imageSrc);  // Call the onCapture function (optional)
   };
+  
 
   const toggleCamera = () => {
     setIsCameraOn((prev) => !prev);
   };
 
+
+  
+
   const handleFileUpload = async (e) => {
     const file = e.target.files[0];
-    if (file) {
-      const reader = new FileReader();
-      reader.onloadend = async () => {
-        const image = new Image();
-        image.src = reader.result;
-        image.onload = async () => {
-          setUploadedImage(reader.result); // Show uploaded image in preview
-          
-          const model = await blazeface.load(); // Load the BlazeFace model
-          
-          const canvas = document.createElement('canvas');
-          const ctx = canvas.getContext('2d');
-          canvas.width = image.width;
-          canvas.height = image.height;
-          ctx.drawImage(image, 0, 0, canvas.width, canvas.height);
+    console.log("file",file);
+    setUploadedImage(file);
 
-          const predictions = await model.estimateFaces(canvas, false); // Run face detection
-          
-          if (predictions.length > 0) {
-            const prediction = predictions[0];
-            const [x, y, width, height] = prediction.topLeft.concat(prediction.bottomRight).flat();
-            setFaceBoundingBox({ x, y, width: width - x, height: height - y });
-
-            ctx.strokeStyle = 'yellow';
-            ctx.lineWidth = 4;
-            ctx.strokeRect(x, y, width - x, height - y);
-          } else {
-            // Show the custom modal
-            const modal = document.getElementById('noFaceModal');
-            if (modal) {
-              modal.style.display = 'block';
-            }
-          }
-        };
-      };
-      reader.readAsDataURL(file);
-    }
+    
   };
 
   const captureUploadedImage = () => {
-    if (!uploadedImage || !faceBoundingBox) return;
+    if (!uploadedImage ) return;
 
     const img = new Image();
     img.src = uploadedImage;
-    img.onload = () => {
-      const canvas = document.createElement('canvas');
-      const scaleFactor = 0.5; 
-      canvas.width = faceBoundingBox.width * scaleFactor;
-      canvas.height = faceBoundingBox.height * scaleFactor;
-
-      const ctx = canvas.getContext('2d');
-      if (!ctx) return;
-
-      ctx.drawImage(
-        img,
-        faceBoundingBox.x, faceBoundingBox.y,
-        faceBoundingBox.width, faceBoundingBox.height,
-        0, 0,
-        canvas.width, canvas.height
-      );
-
-      const imageSrc = canvas.toDataURL('image/png');
-      onCapture(imageSrc); 
-    };
+    console.log("uploadedImage",uploadedImage)
+    onCapture(uploadedImage);
+     
+ 
   };
 
   return (
@@ -183,7 +176,7 @@ const WebcamCapture = ({ onCapture }) => {
             <canvas ref={canvasRef} className="video-overlay" />
           </>
         ) : uploadedImage ? (
-          <img src={uploadedImage} alt="Uploaded Preview" className="uploaded-image-preview" />
+          <img src={uploadedImage} alt="Upload Preview" className="uploaded-image-preview" />
         ) : (
           <div className="camera-off-placeholder">
             Camera Off
@@ -216,7 +209,7 @@ const WebcamCapture = ({ onCapture }) => {
             onClick={captureUploadedImage}
             disabled={!uploadedImage}
           >
-            Uploaded Image
+            Upload Image
           </button>
         </div>
       </div>
